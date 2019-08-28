@@ -1,1 +1,1 @@
-# Aoe2Leaderboard-studio
+# sanity-sapper-blog-studio

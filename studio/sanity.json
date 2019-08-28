@@ -1,10 +1,10 @@
 {
   "root": true,
   "project": {
-    "name": "AoE2Leaderboard"
+    "name": "Manchester Canlander League"
   },
   "api": {
-    "projectId": "v7sgze3m",
+    "projectId": "u191p80p",
     "dataset": "production"
   },
   "plugins": [

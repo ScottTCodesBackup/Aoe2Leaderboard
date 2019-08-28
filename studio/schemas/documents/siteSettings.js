@@ -2,7 +2,7 @@ export default {
   name: 'siteSettings',
   type: 'document',
   title: 'Site Settings',
-  __experimental_actions: ['update', /* 'create', 'delete', */ 'publish'],
+  __experimental_actions: [/*'create',*/ 'update', /*'delete',*/ 'publish'],
   fields: [
     {
       name: 'title',
@@ -24,13 +24,13 @@ export default {
       options: {
         layout: 'tags'
       }
-    },
-    {
-      name: 'author',
-      type: 'reference',
-      description: 'Publish an author and set a reference to them here.',
-      title: 'Author',
-      to: [{type: 'author'}]
     }
+    // {
+    //   name: 'author',
+    //   type: 'reference',
+    //   description: 'Publish an author and set a reference to them here.',
+    //   title: 'Author',
+    //   to: [{type: 'author'}]
+    // }
   ]
 }
