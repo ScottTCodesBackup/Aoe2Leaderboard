@@ -116,7 +116,7 @@
       <span class="menu_btn-lines" />
       <span class="menu_text">Menu</span>
     </button>
-		<h2>Manchester Canlander</h2>
+		<h2>Aoe2 Leaderboard</h2>
   </div>
 </nav>
 

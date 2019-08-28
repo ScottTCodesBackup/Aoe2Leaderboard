@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "Aoe2Leaderboard",
+  "name": "aoe2leaderboard",
   "version": "1.0.0",
   "scripts": {
     "build": "lerna run build --parallel",
@@ -14,7 +14,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "@sanity/cli": "^0.140.17",
+    "@sanity/cli": "^0.142.2",
     "lerna": "^3.14.0"
   }
 }
