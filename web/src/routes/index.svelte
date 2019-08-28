@@ -1,46 +1,46 @@
 <script context="module">
-	import client from '../sanityClient'
-	export function preload() {
+  import client from "../sanityClient";
+  import Season from "../components/Season.svelte";
 
-		const id = client.fetch(
-			'*[_type == "season"] | order(_createdAt desc) [0] ._id'
-		).then(id => id);
+  export function preload() {
+    const id = client
+      .fetch('*[_type == "season"] | order(_createdAt desc) [0] ._id')
+      .then(id => id);
 
-		const seasons = client.fetch(
-			'*[_type == "season"]'
-		).then(seasons => seasons)
+    const seasons = client
+      .fetch('*[_type == "season"]')
+      .then(seasons => seasons);
 
-		return Promise.all([id, seasons]).then(values => {
-			const [id, seasons] = values;
+    return Promise.all([id, seasons]).then(values => {
+      const [id, seasons] = values;
 
-			const requestStr = `*[_type == "match" && seasonplayed._ref == "${id}"]`;
-			const matches = client.fetch(
-				requestStr
-			).then(matches => matches)
+      const requestStr = `*[_type == "match" && seasonplayed._ref == "${id}"]`;
+      const matches = client.fetch(requestStr).then(matches => matches);
 
-			return Promise.all([matches, seasons]).then(values => {
-				const [matches, seasons] = values;
+      return Promise.all([matches, seasons]).then(values => {
+        const [matches, seasons] = values;
 
-				return {
-					matches,
-					seasons
-				}
-			});			
-		});
-	}
+        return {
+          matches,
+          seasons
+        };
+      });
+    });
+  }
 </script>
 
 <script>
-	export let matches;
-	export let seasons;
-	console.log(matches, seasons);
+  export let matches;
+  export let seasons;
+  console.log(matches, seasons);
 </script>
 
 <svelte:head>
-	<title>Sapper project template</title>
+  <title>AoE2 Leaderboard</title>
 </svelte:head>
 
-
+<Season active={true} />
+<Season active={false} />
 
 <!--
 	Request 

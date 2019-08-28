@@ -1,11 +1,29 @@
+<script>
+  let slideQ = false;
+  let active = false;
+
+  const menuToggle = event => {
+    const curr = event.srcElement;
+
+    if (slideQ === false) {
+      slideQ = true;
+      active = !active;
+
+      setTimeout(() => {
+        slideQ = false;
+      }, 300);
+    }
+  };
+</script>
+
 <style>
   nav {
     height: 65px;
     width: 100%;
     padding: 10px 0;
-		position: relative;
-		background: #000;
-		box-sizing: border-box;
+    position: relative;
+    background: #f24150;
+    box-sizing: border-box;
   }
 
   .menu_btn {
@@ -25,7 +43,7 @@
     position: absolute;
     width: 100%;
     height: 5px;
-    background: #FFF;
+    background: #fff;
     left: 0;
     top: 50%;
     margin-top: -10px;
@@ -38,7 +56,7 @@
     position: absolute;
     width: 100%;
     height: 5px;
-    background: #FFF;
+    background: #fff;
     left: 0;
     top: -10px;
     transition: transform 120ms ease-in-out, top 120ms 120ms ease-in-out;
@@ -49,7 +67,7 @@
     position: absolute;
     width: 100%;
     height: 5px;
-    background: #FFF;
+    background: #fff;
     left: 0;
     bottom: -10px;
     transition: transform 120ms ease-in-out, bottom 120ms 120ms ease-in-out;
@@ -71,8 +89,8 @@
     bottom: 0;
   }
 
-	.menu_text {
-		position: absolute;
+  .menu_text {
+    position: absolute;
     left: 0;
     width: 100%;
     text-align: center;
@@ -81,47 +99,50 @@
     color: #fff;
     line-height: 20px;
     bottom: -7px;
-	}
+  }
 
-	h2 {
-		color: #fff;
+  h2 {
+    color: #fff;
     text-align: center;
     padding-left: 55px;
     padding: 7px 0 10px 55px;
     margin: 0;
-	}
+  }
+
+  .menu {
+    position: absolute;
+    display: none;
+    top: 65px;
+    left: 0;
+    z-index: 20;
+    height: calc(100vh - 65px);
+    width: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 30px 40px;
+    box-sizing: border-box;
+    color: #fff;
+  }
+
+  .menu.active {
+    display: block;
+  }
 </style>
-
-<script>
-	let slideQ = false;
-	let active = false;
-
-	function menuToggle(event) {
-		const curr = event.srcElement;
-
-		if (slideQ === false) {
-			slideQ = true;
-			active = !active;
-			
-			setTimeout(() => {
-				slideQ = false;
-			}, 300);
-		}
-	}
-</script>
 
 <nav>
   <div class="container">
-    <button class={`menu_btn${active ? " active" : ""}`} on:click={menuToggle}>
+    <button class={`menu_btn${active ? ' active' : ''}`} on:click={menuToggle}>
       <span class="menu_btn-lines" />
       <span class="menu_text">Menu</span>
     </button>
-		<h2>Aoe2 Leaderboard</h2>
+    <h2>AoE2 Leaderboard</h2>
+  </div>
+  <div class={`menu${active ? ' active' : ''}`}>
+    <a>Match Overview</a>
+    <a>Standings</a>
   </div>
 </nav>
 
 <!--
-
 	Menu button,
 	title
 	Day 2 add search for matches potentially

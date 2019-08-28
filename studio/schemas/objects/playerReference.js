@@ -15,8 +15,7 @@ export default {
   ],
   preview: {
     select: {
-      title: 'player.name',
-      subtitle: 'player.dci'
+      title: 'player.name'
     }
   }
 }

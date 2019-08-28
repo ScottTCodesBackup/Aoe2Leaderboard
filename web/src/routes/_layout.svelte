@@ -5,18 +5,10 @@
 <style>
 	main {
 		position: relative;
-		max-width: 56em;
-		background-color: white;
-		padding: 2em;
+		max-width: 1100px;
+		padding: 20px;
 		margin: 0 auto;
 		box-sizing: border-box;
-	}
-
-	.container {
-		max-width: 1200px;
-		padding: 0 20px;
-		box-sizing: border-box;
-		margin: 0 auto;
 	}
 </style>
 
