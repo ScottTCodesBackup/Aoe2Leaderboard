@@ -1,7 +1,21 @@
 <script>
+  import client from "../sanityClient";
   import Match from "./Match.svelte";
   export let active;
+  export let id;
+  export let name;
+  export let players;
+  let matches = false;
   let slideQ = false;
+
+  const ajaxMatches = () => {
+    if (active === true && matches === false) {
+      const requestStr = `*[_type == "match" && season._ref == "${id}"] | order(_createdAt desc)`;
+      client.fetch(requestStr).then(matchData => {
+        matches = matchData
+      });
+    }
+  };
 
   const accordionToggle = event => {
     const curr = event.srcElement;
@@ -9,12 +23,15 @@
     if (slideQ === false) {
       slideQ = true;
       active = !active;
+      ajaxMatches();
 
       setTimeout(() => {
         slideQ = false;
       }, 300);
     }
   };
+
+  ajaxMatches();
 </script>
 
 <style>
@@ -72,14 +89,15 @@
   }
 </style>
 
-<section class={`season_wrap${active ? ' active' : ''}`}>
+<section data-id={id} class={`season_wrap${active ? ' active' : ''}`}>
   <button class="season_dropdown" type="button" on:click={accordionToggle}>
-    Season 1
+    {name}
   </button>
   <div class="season_matches">
-    <Match />
-    <Match />
-    <Match />
-    <Match />
+    {#if matches}
+      {#each matches as match, i}
+        <Match data={match} index={i} players={players} />
+      {/each}
+    {/if}
   </div>
 </section>

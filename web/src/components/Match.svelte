@@ -1,5 +1,10 @@
 <script>
+  export let data 
+  export let index 
+  export let players 
   import Swords from "../theme/Swords.svelte";
+
+  console.log(data);
 </script>
 
 <style>

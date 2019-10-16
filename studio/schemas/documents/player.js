@@ -7,6 +7,21 @@ export default {
       name: 'name',
       type: 'string',
       title: 'Name'
+    },
+    {
+      name: 'rank',
+      type: 'number',
+      title: 'Rank'
+    },
+    {
+      name: 'wins',
+      type: 'number',
+      title: 'Wins'
+    },
+    {
+      name: 'losses',
+      type: 'number',
+      title: 'Losses'
     }
   ],
   preview: {

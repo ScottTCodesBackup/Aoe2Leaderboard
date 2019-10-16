@@ -3,50 +3,40 @@
   import Season from "../components/Season.svelte";
 
   export function preload() {
-    const id = client
-      .fetch('*[_type == "season"] | order(_createdAt desc) [0] ._id')
-      .then(id => id);
-
     const seasons = client
-      .fetch('*[_type == "season"]')
+      .fetch('*[_type == "season"] | order(_createdAt desc)')
       .then(seasons => seasons);
 
-    return Promise.all([id, seasons]).then(values => {
-      const [id, seasons] = values;
+    const players = client
+      .fetch('*[_type == "player"]')
+      .then(players => players);
 
-      const requestStr = `*[_type == "match" && seasonplayed._ref == "${id}"]`;
-      const matches = client.fetch(requestStr).then(matches => matches);
+    return Promise.all([seasons, players]).then(values => {
+      const [seasons, players] = values;
 
-      return Promise.all([matches, seasons]).then(values => {
-        const [matches, seasons] = values;
-
-        return {
-          matches,
-          seasons
+      return {
+          seasons,
+          players
         };
-      });
     });
   }
 </script>
 
 <script>
-  export let matches;
   export let seasons;
-  console.log(matches, seasons);
+  export let players;
 </script>
 
 <svelte:head>
   <title>AoE2 Leaderboard</title>
 </svelte:head>
 
-<Season active={true} />
-<Season active={false} />
+{#each seasons as season, i}
+  <Season 
+    active={i === 0} 
+    name={season.name} 
+    id={season._id}
+    players={players}
+  />
+{/each}
 
-<!--
-	Request 
-		Matches for newest season.
-
-		leaderboard has players with matches recorded in that season
-			each player has wins losses draws
-			reference player
--->

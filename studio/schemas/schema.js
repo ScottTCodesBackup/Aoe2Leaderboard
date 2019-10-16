@@ -9,6 +9,10 @@ import siteSettings from './documents/siteSettings'
 import player from './documents/player'
 import season from './documents/season'
 import match from './documents/match'
+import teamGame from './documents/teamGame'
+import twoPlayer from './documents/twoPlayer'
+import freeForAll from './documents/freeForAll'
+import matchType from './objects/matchType'
 
 // Object types
 import playerReference from './objects/playerReference'
@@ -28,7 +32,11 @@ export default createSchema({
     player,
     season,
     seasonReference,
-    match
+    match,
+    teamGame,
+    twoPlayer,
+    freeForAll,
+    matchType
     // When added to this list, object types can be used as
     // { type: 'typename' } in other document schemas
   ])
