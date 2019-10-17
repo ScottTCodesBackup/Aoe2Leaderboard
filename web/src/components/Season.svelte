@@ -70,6 +70,20 @@
   .active .season_matches {
     display: block;
   }
+
+  @media (min-width: 600px) {
+    .active .season_matches {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .active .season_matches {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
 </style>
 
 <section class={`season_wrap${active ? ' active' : ''}`}>
@@ -77,6 +91,14 @@
     Season 1
   </button>
   <div class="season_matches">
+    <Match />
+    <Match />
+    <Match />
+    <Match />
+    <Match />
+    <Match />
+    <Match />
+    <Match />
     <Match />
     <Match />
     <Match />

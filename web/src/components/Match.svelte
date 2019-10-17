@@ -7,14 +7,6 @@
     padding: 15px 20px;
   }
 
-  .match_wrap:nth-child(odd) {
-    background: #d6fbd7;
-  }
-
-  .match_wrap:nth-child(even) {
-    background: #bcffbe;
-  }
-
   .match_table div {
     display: grid;
     grid-template-columns: 3fr 3fr 2fr 1fr;
@@ -47,6 +39,40 @@
     margin-bottom: 15px;
     font-size: 16px;
     position: relative;
+  }
+
+  @media(max-width: 599px) {
+     .match_wrap:nth-child(odd) {
+      background: #d6fbd7;
+    }
+
+    .match_wrap:nth-child(even) {
+      background: #bcffbe;
+    }
+  }
+
+  @media (min-width: 600px) {
+    .match_wrap {
+      background: #bcffbe;
+    }
+
+    .match_wrap:nth-child(4n) {
+      background: #d6fbd7;
+    }
+
+    .match_wrap:nth-child(4n + 1) {
+      background: #d6fbd7;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .match_wrap:nth-child(odd) {
+      background: #d6fbd7;
+    }
+
+    .match_wrap:nth-child(even) {
+      background: #bcffbe;
+    }
   }
 </style>
 
