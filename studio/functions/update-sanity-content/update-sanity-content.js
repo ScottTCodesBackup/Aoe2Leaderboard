@@ -15,24 +15,31 @@ const client = sanityClient({
 // Webhooks can also be added in the API settings on https://manage.sanity.io
 exports.handler = async (event, context) => {
   const {body} = event
-  const {created} = body.ids // get the ids of new documents
+  if (body && body.ids) {
+    const {created} = body.ids // get the ids of new documents
 
-  try {
-    const res = await created
-      .reduce((trans, _id) => trans.patch(_id)
-        .setIfMissing({
-          test: `${_id}`
-        }),
-      client
-        .transaction())
-      .commit()
-      .catch(console.error)
-    console.log(`Updated ${res.length} documents.`)
-    console.log(created)
-    return {
-      statusCode: 200
+    try {
+      const res = await created
+        .reduce((trans, _id) => trans.patch(_id)
+          .setIfMissing({
+            test: `${_id}`
+          }),
+        client
+          .transaction())
+        .commit()
+        .catch(console.error)
+      console.log(`Updated ${res.length} documents.`)
+      console.log(created)
+      return {
+        statusCode: 200
+      }
+    } catch (err) {
+      return {statusCode: 500, body: err.toString()}
     }
-  } catch (err) {
-    return {statusCode: 500, body: err.toString()}
+  }
+
+  return {
+    statusCode: 500,
+    body: `${body}`
   }
 }
