@@ -19,9 +19,10 @@ exports.handler = async (event, context) => {
 
   try {
     const res = await created.reduce((trans, _id) => trans.patch(_id).setIfMissing({
-      title: 'Missing TITLE!!!'
+      test: `${_id}`
     }), client.transaction()).commit().catch(console.error)
     console.log(`Updated ${res.length} documents.`)
+    console.log(created)
     return {
       statusCode: 200
     }
