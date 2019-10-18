@@ -18,9 +18,15 @@ exports.handler = async (event, context) => {
   const {created} = body.ids // get the ids of new documents
 
   try {
-    const res = await created.reduce((trans, _id) => trans.patch(_id).setIfMissing({
-      test: `${_id}`
-    }), client.transaction()).commit().catch(console.error)
+    const res = await created
+      .reduce((trans, _id) => trans.patch(_id)
+        .setIfMissing({
+          test: `${_id}`
+        }),
+      client
+        .transaction())
+      .commit()
+      .catch(console.error)
     console.log(`Updated ${res.length} documents.`)
     console.log(created)
     return {
