@@ -14,10 +14,37 @@ export default {
       type: 'array',
       of: [
         {
-          type: 'reference',
-          to: [
+          name: 'player',
+          type: 'object',
+          fields: [
             {
-              type: 'player'
+              name: 'name',
+              type: 'string',
+              title: 'Player Name'
+            },
+            {
+              name: 'rank',
+              type: 'number',
+              title: 'Rank'
+            },
+            {
+              name: 'wins',
+              type: 'number',
+              title: 'Wins'
+            },
+            {
+              name: 'losses',
+              type: 'number',
+              title: 'Losses'
+            },
+            {
+              name: 'ref',
+              type: 'reference',
+              to: [
+                {
+                  type: 'player'
+                }
+              ]
             }
           ]
         }
