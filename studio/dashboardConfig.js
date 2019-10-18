@@ -19,7 +19,7 @@ export default {
                 },
                 {
                   buildHookId: '5cf7a6fd8ae5eadca402cc7a',
-                  title: 'Blog Website',
+                  title: 'Leaderboard Frontend',
                   name: 'sanity-sapper-blog-web-iqehtvd5',
                   apiId: '8c9e5a83-a8bf-4bad-a813-2838dbbdc9ba'
                 }
@@ -33,7 +33,7 @@ export default {
             value: 'https://github.com/ScottTCodes/sanity-sapper-blog',
             category: 'Code'
           },
-          {title: 'Frontend', value: 'https://sanity-sapper-blog-web-iqehtvd5.netlify.com', category: 'apps'}
+          {title: 'Frontend', value: 'https://aoe2leaderboard.netlify.com/', category: 'apps'}
         ]
       }
     },
