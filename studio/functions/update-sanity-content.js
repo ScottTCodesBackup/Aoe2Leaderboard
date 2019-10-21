@@ -16,11 +16,10 @@ const client = sanityClient({
 
 exports.handler = async (event, context) => {
   const {body} = event
-  console.log(event)
-  console.log(body)
+
   if (body && body.ids) {
     const {created} = body.ids // get the ids of new documents
-
+    console.log(created)
     try {
       const res = await created.ids
         .reduce((trans, _id) => {
@@ -29,7 +28,7 @@ exports.handler = async (event, context) => {
           matchObj.then(matchO => {
             // const {match} = matchO
 
-            console.log(matchO)          
+            console.log(matchO)
           })
         })
         // trans.patch(_id)
