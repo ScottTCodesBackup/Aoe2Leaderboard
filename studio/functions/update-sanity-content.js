@@ -55,7 +55,7 @@ exports.handler = async (event, context) => {
     return {statusCode: 200}
   }
 
-  const {created} = body.ids
+  const created = JSON.parse(body)
   console.log(created)
 
   try {
