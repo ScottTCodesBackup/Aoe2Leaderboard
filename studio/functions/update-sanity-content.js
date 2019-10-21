@@ -16,6 +16,8 @@ const client = sanityClient({
 
 exports.handler = async (event, context) => {
   const {body} = event
+  console.log(event)
+  console.log(body)
   if (body && body.ids) {
     const {created} = body.ids // get the ids of new documents
 
