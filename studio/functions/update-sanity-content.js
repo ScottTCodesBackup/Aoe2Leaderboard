@@ -50,64 +50,62 @@ const onevone = players => {
 exports.handler = async (event, context) => {
   const {body} = event
 
-  if (body && body.ids) {
-    const {created} = body.ids // get the ids of new documents
-    console.log(created)
-    try {
-      const res = await created.ids.reduce((trans, _id) => {
-        const matchObj = client.getDocument(_id)
-
-        matchObj.then(matchO => {
-          const {match, season} = matchO
-
-          if (match.twoPlayer && !match.twoPlayer.matchData) {
-            const matchID = _id
-            const playerRefs = match.twoPlayer.players
-            const playerIDs = []
-
-            playerRefs.map(item => {
-              playerIDs.push(item.player._ref)
-            })
-
-            const seasonInfo = client.getDocument(season._ref)
-
-            seasonInfo.then(season => {
-              const playerData = []
-
-              playerRefs.map(item => {
-                playerData.push({
-                  score: item.score,
-                  ...season.players.find(itemInner => itemInner.ref._ref === item.player._ref)
-                })
-              })
-
-              const matchData = onevone(playerData)
-              console.log('matchData: ' + matchData)
-              client
-                .patch(matchID)
-                .set({
-                  matchData
-                })
-                .commit()
-                .catch(console.error)
-            })
-          }
-        })
-      })
-
-      return {
-        statusCode: 200
-      }
-    } catch (err) {
-      return {
-        statusCode: 500,
-        body: err.toString()
-      }
-    }
+  if (!event.body || !event.body.ids || !event.body.ids.created.length === 0) {
+    return {statusCode: 200}
   }
 
-  return {
-    statusCode: 500,
-    body: `Error: ${body}`
+  const {created} = body.ids
+  console.log(created)
+
+  try {
+    const res = await created.ids.reduce((trans, _id) => {
+      const matchObj = client.getDocument(_id)
+
+      matchObj.then(matchO => {
+        const {match, season} = matchO
+
+        if (match.twoPlayer && !match.twoPlayer.matchData) {
+          const matchID = _id
+          const playerRefs = match.twoPlayer.players
+          const playerIDs = []
+
+          playerRefs.map(item => {
+            playerIDs.push(item.player._ref)
+          })
+
+          const seasonInfo = client.getDocument(season._ref)
+
+          seasonInfo.then(season => {
+            const playerData = []
+
+            playerRefs.map(item => {
+              playerData.push({
+                score: item.score,
+                ...season.players.find(itemInner => itemInner.ref._ref === item.player._ref)
+              })
+            })
+
+            const matchData = onevone(playerData)
+            console.log('matchData: ' + matchData)
+            client
+              .patch(matchID)
+              .set({
+                matchData
+              })
+              .commit()
+              .catch(console.error)
+          })
+        }
+      })
+    })
+
+    return {
+      statusCode: 200
+    }
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: err.toString()
+    }
   }
 }
