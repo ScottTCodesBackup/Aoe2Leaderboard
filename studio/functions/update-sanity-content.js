@@ -49,64 +49,65 @@ const onevone = players => {
 
 exports.handler = async (event, context) => {
   const {body} = event
-  console.log(body)
-  console.log(`Event body exists: ${event && event.body ? 'true' : 'false'}, IDS exists: ${event && event.body && event.body.ids ? 'true' : 'false'}, Created exists: ${event && event.body && event.body.ids && event.body.ids.created.length > 0 ? 'true' : 'false'}`)
-  if (!event.body || !event.body.ids || event.body.ids.created.length === 0) {
-    return {statusCode: 200}
-  }
+  if (body) {
+    const bodyParsed = JSON.parse(body)
+    console.log(bodyParsed)
+    console.log(`IDS exists: ${bodyParsed.ids ? 'true' : 'false'}, Created exists: ${bodyParsed.ids && bodyParsed.ids.created.length > 0 ? 'true' : 'false'}`)
 
-  const created = JSON.parse(body)
-  console.log(created)
+    if (bodyParsed.ids || bodyParsed.ids.created.length === 0) {
+      return {statusCode: 200}
+    }
 
-  try {
-    const res = await created.ids.reduce((trans, _id) => {
-      const matchObj = client.getDocument(_id)
+    try {
+      const res = await bodyParsed.ids.created.ids.reduce((trans, _id) => {
+        const matchObj = client.getDocument(_id)
 
-      matchObj.then(matchO => {
-        const {match, season} = matchO
+        matchObj.then(matchO => {
+          const {match, season} = matchO
 
-        if (match.twoPlayer && !match.twoPlayer.matchData) {
-          const matchID = _id
-          const playerRefs = match.twoPlayer.players
-          const playerIDs = []
-
-          playerRefs.map(item => {
-            playerIDs.push(item.player._ref)
-          })
-
-          const seasonInfo = client.getDocument(season._ref)
-
-          seasonInfo.then(season => {
-            const playerData = []
+          if (match.twoPlayer && !match.twoPlayer.matchData) {
+            const matchID = _id
+            const playerRefs = match.twoPlayer.players
+            const playerIDs = []
 
             playerRefs.map(item => {
-              playerData.push({
-                score: item.score,
-                ...season.players.find(itemInner => itemInner.ref._ref === item.player._ref)
-              })
+              playerIDs.push(item.player._ref)
             })
 
-            const matchData = onevone(playerData)
-            console.log('matchData: ' + matchData)
-            client
-              .patch(matchID)
-              .set({
-                matchData
-              })
-              .commit()
-              .catch(console.error)
-          })
-        }
-      })
-    })
+            const seasonInfo = client.getDocument(season._ref)
 
-    return {
-      statusCode: 200
-    }
-  } catch (err) {
-    return {
-      statusCode: 500,
-      body: err.toString()
+            seasonInfo.then(season => {
+              const playerData = []
+
+              playerRefs.map(item => {
+                playerData.push({
+                  score: item.score,
+                  ...season.players.find(itemInner => itemInner.ref._ref === item.player._ref)
+                })
+              })
+
+              const matchData = onevone(playerData)
+              console.log('matchData: ' + matchData)
+              client
+                .patch(matchID)
+                .set({
+                  matchData
+                })
+                .commit()
+                .catch(console.error)
+            })
+          }
+        })
+      })
+
+      return {
+        statusCode: 200
+      }
+    } catch (err) {
+      return {
+        statusCode: 500,
+        body: err.toString()
+      }
     }
   }
 }
