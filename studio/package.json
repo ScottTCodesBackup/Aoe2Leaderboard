@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "mtg-league-leaderboard",
+  "name": "aoe2leaderboard",
   "version": "1.0.0",
   "main": "package.json",
   "author": "Scott Taylor",

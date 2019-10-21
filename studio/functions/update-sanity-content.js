@@ -58,9 +58,9 @@ exports.handler = async (event, context) => {
 
     try {
       const res = await bodyParsed.ids.created.map(_id => {
-        const matchObj = client.getDocument(_id)
+        console.log(_id)
 
-        matchObj.then(matchO => {
+        client.getDocument(_id).then(matchO => {
           console.log(matchO)
           const {match, season} = matchO
 
