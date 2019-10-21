@@ -1,11 +1,8 @@
 const sanityClient = require('@sanity/client')
 
 const client = sanityClient({
-  projectId: 'cnummxbj',
+  projectId: 'v7sgze3m',
   dataset: 'production',
-  // Remember to add a token with write access to your Netlify app’s environment variables.
-  // Call it SANITY_TOKEN
-  // https://docs.netlify.com/configure-builds/environment-variables/#declare-variables
   token: process.env.SANITY_TOKEN,
   useCdn: false
 })
@@ -49,10 +46,6 @@ const onevone = players => {
 
   return matchData
 }
-
-// Docs on event and context https://www.netlify.com/docs/functions/#the-handler-method
-// $ sanity hook create add-missing-value production https://yourdomain.netlify.com/.netlify/functions/update-sanity-content
-// Webhooks can also be added in the API settings on https://manage.sanity.io
 
 exports.handler = async (event, context) => {
   const {body} = event
