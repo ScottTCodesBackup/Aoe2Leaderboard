@@ -57,45 +57,42 @@ exports.handler = async (event, context) => {
     })
 
     try {
-      const res = await bodyParsed.ids.created.map(_id => {
-        client.getDocument(`${_id}`).then(matchO => {
-          console.log(matchO)
-          const {match, season} = matchO
+      const docID = await bodyParsed.ids.created.map(_id => _id)
+      const matchFetch = await client.getDocument(`${docID}`).then(match => match)
+      const {match, season} = matchFetch
 
-          if (match.twoPlayer && !match.twoPlayer.matchData) {
-            const matchID = _id
-            const playerRefs = match.twoPlayer.players
-            const playerIDs = []
+      if (match.twoPlayer && !match.twoPlayer.matchData) {
+        const matchID = docID
+        const playerRefs = match.twoPlayer.players
+        const playerIDs = []
 
-            playerRefs.map(item => {
-              playerIDs.push(item.player._ref)
-            })
-
-            const seasonInfo = client.getDocument(`${season._ref}`)
-
-            seasonInfo.then(season => {
-              const playerData = []
-
-              playerRefs.map(item => {
-                playerData.push({
-                  score: item.score,
-                  ...season.players.find(itemInner => itemInner.ref._ref === item.player._ref)
-                })
-              })
-
-              const matchData = onevone(playerData)
-              console.log('matchData: ' + matchData)
-              client
-                .patch(matchID)
-                .set({
-                  matchData
-                })
-                .commit()
-                .catch(console.error)
-            })
-          }
+        playerRefs.map(item => {
+          playerIDs.push(item.player._ref)
         })
-      })
+
+        const seasonInfo = client.getDocument(`${season._ref}`)
+
+        seasonInfo.then(season => {
+          const playerData = []
+
+          playerRefs.map(item => {
+            playerData.push({
+              score: item.score,
+              ...season.players.find(itemInner => itemInner.ref._ref === item.player._ref)
+            })
+          })
+
+          const matchData = onevone(playerData)
+          console.log('matchData: ' + matchData)
+          client
+            .patch(matchID)
+            .set({
+              matchData
+            })
+            .commit()
+            .catch(console.error)
+        })
+      }
 
       return {
         statusCode: 200
