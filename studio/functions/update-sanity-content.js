@@ -52,7 +52,7 @@ exports.handler = async (event, context) => {
   if (body) {
     const bodyParsed = JSON.parse(body)
 
-    if (bodyParsed.ids || bodyParsed.ids.created.length === 0) {
+    if (!bodyParsed.ids || bodyParsed.ids.created.length === 0) {
       return {statusCode: 200}
     }
 
