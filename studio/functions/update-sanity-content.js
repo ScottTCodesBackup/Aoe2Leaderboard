@@ -61,6 +61,7 @@ exports.handler = async (event, context) => {
         const matchObj = client.getDocument(_id)
 
         matchObj.then(matchO => {
+          console.log(matchO)
           const {match, season} = matchO
 
           if (match.twoPlayer && !match.twoPlayer.matchData) {
