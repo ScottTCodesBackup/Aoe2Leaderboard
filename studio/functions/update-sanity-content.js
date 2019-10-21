@@ -50,7 +50,8 @@ const onevone = players => {
 exports.handler = async (event, context) => {
   const {body} = event
 
-  if (!event.body || !event.body.ids || !event.body.ids.created.length === 0) {
+  console.log(`Event body exists: ${event.body ? 'true' : 'false'}, IDS exists: ${event.body.ids ? 'true' : 'false'}, Created exists: ${event.body.ids.created.length > 0 ? 'true' : 'false'}`)
+  if (!event.body || !event.body.ids || event.body.ids.created.length > 0) {
     return {statusCode: 200}
   }
 
