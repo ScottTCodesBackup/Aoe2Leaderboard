@@ -22,17 +22,25 @@ exports.handler = async (event, context) => {
     const {created} = body.ids // get the ids of new documents
 
     try {
-      const res = await created
-        .reduce((trans, _id) => trans.patch(_id)
-          .setIfMissing({
-            test: `${_id}`
-          }),
-        client
-          .transaction())
-        .commit()
-        .catch(console.error)
-      console.log(`Updated ${res.length} documents.`)
-      console.log(created)
+      const res = await created.ids
+        .reduce((trans, _id) => {
+          const matchObj = client.getDocument(_id)
+
+          matchObj.then(matchO => {
+            // const {match} = matchO
+
+            console.log(matchO)          
+          })
+        })
+        // trans.patch(_id)
+        //   .setIfMissing({
+        //     test: `${_id}`
+        //   }),
+        // client
+        //   .transaction())
+        // .commit()
+        // .catch(console.error)
+
       return {
         statusCode: 200
       }
