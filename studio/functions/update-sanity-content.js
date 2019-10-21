@@ -24,8 +24,8 @@ const onevone = players => {
     return newRating
   }
 
-  matchData[player1.ref._ref] = { rank: player1.rank, difference: 0, name: player1.name }
-  matchData[player2.ref._ref] = { rank: player2.rank, difference: 0, name: player2.name }
+  matchData[player1.ref._ref] = {rank: player1.rank, difference: 0, name: player1.name}
+  matchData[player2.ref._ref] = {rank: player2.rank, difference: 0, name: player2.name}
 
   const player1Expected = getExpected(player1.rank, player2.rank)
   const player2Expected = getExpected(player2.rank, player1.rank)
@@ -89,7 +89,7 @@ exports.handler = async (event, context) => {
               })
 
               const matchData = onevone(playerData)
-
+              console.log('matchData: ' + matchData)
               client
                 .patch(matchID)
                 .set({
