@@ -58,9 +58,7 @@ exports.handler = async (event, context) => {
 
     try {
       const res = await bodyParsed.ids.created.map(_id => {
-        console.log(_id)
-
-        client.getDocument(_id).then(matchO => {
+        client.getDocument(`${_id}`).then(matchO => {
           console.log(matchO)
           const {match, season} = matchO
 
@@ -73,7 +71,7 @@ exports.handler = async (event, context) => {
               playerIDs.push(item.player._ref)
             })
 
-            const seasonInfo = client.getDocument(season._ref)
+            const seasonInfo = client.getDocument(`${season._ref}`)
 
             seasonInfo.then(season => {
               const playerData = []
