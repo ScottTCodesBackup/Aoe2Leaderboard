@@ -51,15 +51,13 @@ exports.handler = async (event, context) => {
   const {body} = event
   if (body) {
     const bodyParsed = JSON.parse(body)
-    console.log(bodyParsed)
-    console.log(`IDS exists: ${bodyParsed.ids ? 'true' : 'false'}, Created exists: ${bodyParsed.ids && bodyParsed.ids.created.length > 0 ? 'true' : 'false'}`)
 
     if (bodyParsed.ids || bodyParsed.ids.created.length === 0) {
       return {statusCode: 200}
     }
 
     try {
-      const res = await bodyParsed.ids.created.ids.reduce((trans, _id) => {
+      const res = await bodyParsed.ids.created.map(_id => {
         const matchObj = client.getDocument(_id)
 
         matchObj.then(matchO => {
