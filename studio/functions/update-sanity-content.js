@@ -84,11 +84,11 @@ exports.handler = (event, context) => {
               })
             })
 
-            const matchData = onevone(playerData)
+            const matchDataObj = onevone(playerData)
 
             client
               .patch(matchID)
-              .setIfMissing({'matchData': matchData})
+              .setIfMissing({matchData: matchDataObj})
               .commit()
               .catch(console.error)
           })
