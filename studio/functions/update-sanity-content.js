@@ -89,7 +89,8 @@ exports.handler = (event, context) => {
             console.log('matchData: ' + matchData)
             client
               .patch(matchID)
-              .set(matchData)
+              .setIfMissing({matchData: {}})
+              .set({matchData: matchData})
               .commit()
               .catch(console.error)
           })
