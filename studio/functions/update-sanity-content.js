@@ -1,6 +1,6 @@
 const sanityClient = require('@sanity/client')
 
-exports.handler = async (event, context) => {
+exports.handler = (event, context) => {
   const getExpected = (a, b) => {
     return 1 / (1 + Math.pow(10, (b - a) / 400))
   }
@@ -57,8 +57,8 @@ exports.handler = async (event, context) => {
     })
 
     try {
-      const docID = await bodyParsed.ids.created.map(_id => _id)
-      const matchFetch = await client.getDocument(`${docID}`)
+      const docID = bodyParsed.ids.created.map(_id => _id)
+      const matchFetch = client.getDocument(`${docID}`)
 
       matchFetch.then(matchFetch => {
         console.log(matchFetch)
