@@ -6,7 +6,7 @@ exports.handler = (event, context) => {
   }
 
   const onevone = players => {
-    const matchData = {}
+    const matchData = []
     const player1 = players[0]
     const player2 = players[1]
 
@@ -15,8 +15,8 @@ exports.handler = (event, context) => {
       return newRating
     }
 
-    matchData[player1.ref._ref] = {rank: player1.rank, difference: 0, name: player1.name}
-    matchData[player2.ref._ref] = {rank: player2.rank, difference: 0, name: player2.name}
+    matchData.push({rank: player1.rank, difference: 0, name: player1.name})
+    matchData.push({rank: player2.rank, difference: 0, name: player2.name})
 
     const player1Expected = getExpected(player1.rank, player2.rank)
     const player2Expected = getExpected(player2.rank, player1.rank)
@@ -32,11 +32,11 @@ exports.handler = (event, context) => {
       player2NewRank = updateRating(player2Expected, 1, player2.rank)
     }
 
-    matchData[player1.ref._ref].newRank = player1NewRank
-    matchData[player2.ref._ref].newRank = player2NewRank
+    matchData[0].newRank = player1NewRank
+    matchData[1].newRank = player2NewRank
 
-    matchData[player1.ref._ref].difference = player1NewRank - player1.rank
-    matchData[player2.ref._ref].difference = player2NewRank - player2.rank
+    matchData[0].difference = player1NewRank - player1.rank
+    matchData[1].difference = player2NewRank - player2.rank
 
     return matchData
   }
@@ -61,7 +61,6 @@ exports.handler = (event, context) => {
       const matchFetch = client.getDocument(`${docID}`)
 
       matchFetch.then(matchFetch => {
-        console.log(matchFetch)
         const {match, season} = matchFetch
 
         if (match.twoPlayer && !match.twoPlayer.matchData) {
@@ -86,11 +85,10 @@ exports.handler = (event, context) => {
             })
 
             const matchData = onevone(playerData)
-            console.log('matchData: ' + matchData)
+
             client
               .patch(matchID)
-              .setIfMissing({matchData: {}})
-              .set({matchData: matchData})
+              .setIfMissing({'matchData': matchData})
               .commit()
               .catch(console.error)
           })
