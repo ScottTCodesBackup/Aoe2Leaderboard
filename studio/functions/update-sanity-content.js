@@ -59,40 +59,43 @@ exports.handler = async (event, context) => {
     try {
       const docID = await bodyParsed.ids.created.map(_id => _id)
       const matchFetch = await client.getDocument(`${docID}`).then(match => match)
-      const {match, season} = matchFetch
 
-      if (match.twoPlayer && !match.twoPlayer.matchData) {
-        const matchID = docID
-        const playerRefs = match.twoPlayer.players
-        const playerIDs = []
+      matchFetch.then(matchFetch => {
+        const {match, season} = matchFetch
 
-        playerRefs.map(item => {
-          playerIDs.push(item.player._ref)
-        })
-
-        const seasonInfo = client.getDocument(`${season._ref}`)
-
-        seasonInfo.then(season => {
-          const playerData = []
+        if (match.twoPlayer && !match.twoPlayer.matchData) {
+          const matchID = docID
+          const playerRefs = match.twoPlayer.players
+          const playerIDs = []
 
           playerRefs.map(item => {
-            playerData.push({
-              score: item.score,
-              ...season.players.find(itemInner => itemInner.ref._ref === item.player._ref)
-            })
+            playerIDs.push(item.player._ref)
           })
 
-          const matchData = onevone(playerData)
-          console.log('matchData: ' + matchData)
-          client
-            .patch(matchID)
-            .set({
-              matchData
+          const seasonInfo = client.getDocument(`${season._ref}`)
+
+          seasonInfo.then(season => {
+            const playerData = []
+
+            playerRefs.map(item => {
+              playerData.push({
+                score: item.score,
+                ...season.players.find(itemInner => itemInner.ref._ref === item.player._ref)
+              })
             })
-            .commit()
-            .catch(console.error)
-        })
-      }
+
+            const matchData = onevone(playerData)
+            console.log('matchData: ' + matchData)
+            client
+              .patch(matchID)
+              .set({
+                matchData
+              })
+              .commit()
+              .catch(console.error)
+          })
+        }
+      })
 
       return {
         statusCode: 200
