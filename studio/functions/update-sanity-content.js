@@ -58,9 +58,10 @@ exports.handler = async (event, context) => {
 
     try {
       const docID = await bodyParsed.ids.created.map(_id => _id)
-      const matchFetch = await client.getDocument(`${docID}`).then(match => match)
+      const matchFetch = await client.getDocument(`${docID}`)
 
       matchFetch.then(matchFetch => {
+        console.log(matchFetch)
         const {match, season} = matchFetch
 
         if (match.twoPlayer && !match.twoPlayer.matchData) {
