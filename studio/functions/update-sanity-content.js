@@ -41,6 +41,66 @@ exports.handler = (event, context) => {
     return matchData
   }
 
+  const freeForAll = players => {
+    const length = players.length
+    const gamesPlayed = length - 1
+    const matchData = []
+    let kFactorAdjuster = (1 - (gamesPlayed / 10)) / 2
+    if (kFactorAdjuster < 0.4) {
+      kFactorAdjuster = 0.4
+    }
+
+    const kFactor = 32 * kFactorAdjuster
+
+    const updateRating = (expected, actual, current) => {
+      const newRating = Math.round(current + kFactor * (actual - expected))
+      return newRating
+    }
+
+    for (let i = 0; length > i; i += 1) {
+      matchData[i] = {rank: players[i].rank, difference: 0, name: players[i].name, id: players[i].ref._ref}
+    }
+
+    for (let i = 0; length > i; i += 1) {
+      const player1 = players[i]
+      const player1Index = matchData.findIndex(id => id === player1.ref._ref)
+
+      for (let j = 0; length > j; j += 1) {
+        setTimeout(() => {
+          if (j > i) {
+            const player2 = players[j]
+            const player2Index = matchData.findIndex(id => id === player1.ref._ref)
+            const player1Expected = getExpected(player1.rank, player2.rank)
+            const player2Expected = getExpected(player2.rank, player1.rank)
+            let player1newRating
+            let player2newRating
+
+            if (player1.win < player2.win) {
+              player1newRating = updateRating(player1Expected, 1, player1.rank) - matchData[player1Index].rank
+              player2newRating = updateRating(player2Expected, 0, player2.rank) - matchData[player2Index].rank
+            } else {
+              player1newRating = updateRating(player1Expected, 0, player1.rank) - matchData[player1Index].rank
+              player2newRating = updateRating(player2Expected, 1, player2.rank) - matchData[player2Index].rank
+            }
+
+            matchData[player1Index].difference += player1newRating
+            matchData[player2Index].difference += player2newRating
+          }
+
+          if (j === gamesPlayed) {
+            if (matchData[player1Index].difference > 40) {
+              matchData[player1Index].difference = 40
+            }
+
+            matchData[player1Index].newRank = matchData[player1Index].rank + matchData[player1Index].difference
+          }
+        }, 0)
+      }
+    }
+
+    return matchData
+  }
+
   const {body} = event
   if (body) {
     const bodyParsed = JSON.parse(body)
@@ -66,12 +126,6 @@ exports.handler = (event, context) => {
         if (match.twoPlayer && !match.twoPlayer.matchData) {
           const matchID = docID
           const playerRefs = match.twoPlayer.players
-          const playerIDs = []
-
-          playerRefs.map(item => {
-            playerIDs.push(item.player._ref)
-          })
-
           const seasonInfo = client.getDocument(`${season._ref}`)
 
           seasonInfo.then(season => {
@@ -94,12 +148,32 @@ exports.handler = (event, context) => {
               )
               .commit()
               .catch(console.error)
+          })
+        } else if (match.freeForAll && !match.freeForAll.matchData) {
+          const matchID = docID
+          const playerRefs = match.freeForAll.players
+          const seasonInfo = client.getDocument(`${season._ref}`)
 
-            // client
-            //   .patch(matchID)
-            //   .setIfMissing({matchData: JSON.stringify(matchDataObj)})
-            //   .commit()
-            //   .catch(console.error)
+          seasonInfo.then(season => {
+            const playerData = []
+
+            playerRefs.map(item => {
+              playerData.push({
+                score: item.score,
+                ...season.players.find(itemInner => itemInner.ref._ref === item.player._ref)
+              })
+            })
+
+            const matchDataObj = freeForAll(playerData)
+
+            matchID
+              .reduce(
+                (trx, id) =>
+                  trx.patch(id, patch => patch.setIfMissing({matchData: matchDataObj})),
+                client.transaction()
+              )
+              .commit()
+              .catch(console.error)
           })
         }
       })

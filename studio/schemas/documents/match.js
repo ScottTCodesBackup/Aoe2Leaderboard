@@ -15,6 +15,19 @@ export default {
       type: 'matchType',
       title: 'Match',
       name: 'match'
+    },
+    {
+      type: 'array',
+      name: 'matchData',
+      hidden: true,
+      of: [
+        {
+          type: 'normalGameObj'
+        },
+        {
+          type: 'teamGameObj'
+        }
+      ]
     }
   ],
   preview: {
