@@ -86,11 +86,20 @@ exports.handler = (event, context) => {
 
             const matchDataObj = onevone(playerData)
 
-            client
-              .patch(matchID)
-              .setIfMissing({matchData: JSON.stringify(matchDataObj)})
+            matchID
+              .reduce(
+                (trx, id) =>
+                  trx.patch(id, patch => patch.setIfMissing({matchData: matchDataObj})),
+                client.transaction()
+              )
               .commit()
               .catch(console.error)
+
+            // client
+            //   .patch(matchID)
+            //   .setIfMissing({matchData: JSON.stringify(matchDataObj)})
+            //   .commit()
+            //   .catch(console.error)
           })
         }
       })
