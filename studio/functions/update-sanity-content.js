@@ -58,24 +58,24 @@ exports.handler = (event, context) => {
     }
 
     for (let i = 0; length > i; i += 1) {
-      matchData[i] = {rank: players[i].rank, difference: 0, name: players[i].name, id: players[i].player._ref}
+      matchData[i] = {rank: players[i].rank, difference: 0, name: players[i].name}
     }
 
     for (let i = 0; length > i; i += 1) {
       const player1 = players[i]
-      const player1Index = matchData.findIndex(id => id === player1.player._ref)
+      const player1Index = matchData.findIndex(name => name === player1.name)
 
       for (let j = 0; length > j; j += 1) {
         setTimeout(() => {
           if (j > i) {
             const player2 = players[j]
-            const player2Index = matchData.findIndex(id => id === player2.player._ref)
+            const player2Index = matchData.findIndex(name => name === player2.name)
             const player1Expected = getExpected(player1.rank, player2.rank)
             const player2Expected = getExpected(player2.rank, player1.rank)
             let player1newRating
             let player2newRating
 
-            if (player1.win < player2.win) {
+            if (player1.score < player2.score) {
               player1newRating = updateRating(player1Expected, 1, player1.rank) - matchData[player1Index].rank
               player2newRating = updateRating(player2Expected, 0, player2.rank) - matchData[player2Index].rank
             } else {
