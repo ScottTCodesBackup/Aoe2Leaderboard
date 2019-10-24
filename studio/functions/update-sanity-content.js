@@ -88,7 +88,7 @@ exports.handler = (event, context) => {
 
             client
               .patch(matchID)
-              .setIfMissing({matchData: matchDataObj})
+              .setIfMissing({matchData: JSON.stringify(matchDataObj)})
               .commit()
               .catch(console.error)
           })
