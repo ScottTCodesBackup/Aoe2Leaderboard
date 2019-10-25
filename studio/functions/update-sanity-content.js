@@ -121,6 +121,8 @@ exports.handler = (event, context) => {
         }
       }
     }
+
+    return matchData
   }
 
   const {body} = event
