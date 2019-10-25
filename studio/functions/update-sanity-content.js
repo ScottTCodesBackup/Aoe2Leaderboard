@@ -83,48 +83,44 @@ exports.handler = (event, context) => {
       const player1Index = findIndex(player1._key, matchData)
 
       for (let j = 0; length > j; j += 1) {
-        setTimeout(() => {
-          if (j > i) {
-            const player2 = players[j]
-            const player2Index = findIndex(player2._key, matchData)
-            const player1Expected = getExpected(player1.rank, player2.rank)
-            const player2Expected = getExpected(player2.rank, player1.rank)
-            let player1newRating
-            let player2newRating
+        if (j > i) {
+          const player2 = players[j]
+          const player2Index = findIndex(player2._key, matchData)
+          const player1Expected = getExpected(player1.rank, player2.rank)
+          const player2Expected = getExpected(player2.rank, player1.rank)
+          let player1newRating
+          let player2newRating
 
-            if (player1.score < player2.score) {
-              player1newRating =
+          if (player1.score < player2.score) {
+            player1newRating =
                 updateRating(player1Expected, 1, player1.rank) -
                 matchData[player1Index].rank
-              player2newRating =
+            player2newRating =
                 updateRating(player2Expected, 0, player2.rank) -
                 matchData[player2Index].rank
-            } else {
-              player1newRating =
+          } else {
+            player1newRating =
                 updateRating(player1Expected, 0, player1.rank) -
                 matchData[player1Index].rank
-              player2newRating =
+            player2newRating =
                 updateRating(player2Expected, 1, player2.rank) -
                 matchData[player2Index].rank
-            }
-
-            matchData[player1Index].difference += player1newRating
-            matchData[player2Index].difference += player2newRating
           }
 
-          if (j === gamesPlayed) {
-            if (matchData[player1Index].difference > 40) {
-              matchData[player1Index].difference = 40
-            }
+          matchData[player1Index].difference += player1newRating
+          matchData[player2Index].difference += player2newRating
+        }
 
-            matchData[player1Index].newRank =
+        if (j === gamesPlayed) {
+          if (matchData[player1Index].difference > 40) {
+            matchData[player1Index].difference = 40
+          }
+
+          matchData[player1Index].newRank =
               matchData[player1Index].rank + matchData[player1Index].difference
-          }
-        }, 0)
+        }
       }
     }
-
-    return matchData
   }
 
   const {body} = event
