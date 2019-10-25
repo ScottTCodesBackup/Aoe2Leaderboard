@@ -5,6 +5,18 @@ exports.handler = (event, context) => {
     return 1 / (1 + Math.pow(10, (b - a) / 400))
   }
 
+  const findIndex = (find, array) => {
+    let index = null
+
+    array.map((item, i) => {
+      if (item._key === find) {
+        index = i
+      }
+    })
+
+    return index
+  }
+
   const onevone = players => {
     const matchData = []
     const player1 = players[0]
@@ -41,65 +53,79 @@ exports.handler = (event, context) => {
     return matchData
   }
 
-  // const freeForAll = players => {
-  //   const length = players.length
-  //   const gamesPlayed = length - 1
-  //   const matchData = []
-  //   let kFactorAdjuster = (1 - (gamesPlayed / 10)) / 2
-  //   if (kFactorAdjuster < 0.4) {
-  //     kFactorAdjuster = 0.4
-  //   }
+  const freeForAll = players => {
+    const length = players.length
+    const gamesPlayed = length - 1
+    const matchData = []
+    let kFactorAdjuster = (1 - gamesPlayed / 10) / 2
+    if (kFactorAdjuster < 0.4) {
+      kFactorAdjuster = 0.4
+    }
 
-  //   const kFactor = 32 * kFactorAdjuster
+    const kFactor = 32 * kFactorAdjuster
 
-  //   const updateRating = (expected, actual, current) => {
-  //     const newRating = Math.round(current + kFactor * (actual - expected))
-  //     return newRating
-  //   }
+    const updateRating = (expected, actual, current) => {
+      const newRating = Math.round(current + kFactor * (actual - expected))
+      return newRating
+    }
 
-  //   for (let i = 0; length > i; i += 1) {
-  //     matchData[i] = {rank: players[i].rank, difference: 0, name: players[i].name}
-  //   }
+    for (let i = 0; length > i; i += 1) {
+      matchData.push({
+        rank: players[i].rank,
+        difference: 0,
+        name: players[i].name,
+        _key: players[i]._key
+      })
+    }
 
-  //   for (let i = 0; length > i; i += 1) {
-  //     const player1 = players[i]
-  //     const player1Index = matchData.findIndex(name => name === player1.name)
+    for (let i = 0; length > i; i += 1) {
+      const player1 = players[i]
+      const player1Index = findIndex(player1._key, matchData)
 
-  //     for (let j = 0; length > j; j += 1) {
-  //       setTimeout(() => {
-  //         if (j > i) {
-  //           const player2 = players[j]
-  //           const player2Index = matchData.findIndex(name => name === player2.name)
-  //           const player1Expected = getExpected(player1.rank, player2.rank)
-  //           const player2Expected = getExpected(player2.rank, player1.rank)
-  //           let player1newRating
-  //           let player2newRating
+      for (let j = 0; length > j; j += 1) {
+        setTimeout(() => {
+          if (j > i) {
+            const player2 = players[j]
+            const player2Index = findIndex(player2._key, matchData)
+            const player1Expected = getExpected(player1.rank, player2.rank)
+            const player2Expected = getExpected(player2.rank, player1.rank)
+            let player1newRating
+            let player2newRating
 
-  //           if (player1.score < player2.score) {
-  //             player1newRating = updateRating(player1Expected, 1, player1.rank) - matchData[player1Index].rank
-  //             player2newRating = updateRating(player2Expected, 0, player2.rank) - matchData[player2Index].rank
-  //           } else {
-  //             player1newRating = updateRating(player1Expected, 0, player1.rank) - matchData[player1Index].rank
-  //             player2newRating = updateRating(player2Expected, 1, player2.rank) - matchData[player2Index].rank
-  //           }
+            if (player1.score < player2.score) {
+              player1newRating =
+                updateRating(player1Expected, 1, player1.rank) -
+                matchData[player1Index].rank
+              player2newRating =
+                updateRating(player2Expected, 0, player2.rank) -
+                matchData[player2Index].rank
+            } else {
+              player1newRating =
+                updateRating(player1Expected, 0, player1.rank) -
+                matchData[player1Index].rank
+              player2newRating =
+                updateRating(player2Expected, 1, player2.rank) -
+                matchData[player2Index].rank
+            }
 
-  //           matchData[player1Index].difference += player1newRating
-  //           matchData[player2Index].difference += player2newRating
-  //         }
+            matchData[player1Index].difference += player1newRating
+            matchData[player2Index].difference += player2newRating
+          }
 
-  //         if (j === gamesPlayed) {
-  //           if (matchData[player1Index].difference > 40) {
-  //             matchData[player1Index].difference = 40
-  //           }
+          if (j === gamesPlayed) {
+            if (matchData[player1Index].difference > 40) {
+              matchData[player1Index].difference = 40
+            }
 
-  //           matchData[player1Index].newRank = matchData[player1Index].rank + matchData[player1Index].difference
-  //         }
-  //       }, 0)
-  //     }
-  //   }
+            matchData[player1Index].newRank =
+              matchData[player1Index].rank + matchData[player1Index].difference
+          }
+        }, 0)
+      }
+    }
 
-  //   return matchData
-  // }
+    return matchData
+  }
 
   const {body} = event
   if (body) {
@@ -150,7 +176,7 @@ exports.handler = (event, context) => {
               .catch(console.error)
           })
         } else if (match.freeForAll && !match.freeForAll.matchData) {
-          // const matchID = docID
+          const matchID = docID
           const playerRefs = match.freeForAll.players
           const seasonInfo = client.getDocument(`${season._ref}`)
 
@@ -164,17 +190,16 @@ exports.handler = (event, context) => {
               })
             })
 
-            console.log(playerData)
-            // const matchDataObj = freeForAll(playerData)
+            const matchDataObj = freeForAll(playerData)
 
-            // matchID
-            //   .reduce(
-            //     (trx, id) =>
-            //       trx.patch(id, patch => patch.setIfMissing({matchData: matchDataObj})),
-            //     client.transaction()
-            //   )
-            //   .commit()
-            //   .catch(console.error)
+            matchID
+              .reduce(
+                (trx, id) =>
+                  trx.patch(id, patch => patch.setIfMissing({matchData: matchDataObj})),
+                client.transaction()
+              )
+              .commit()
+              .catch(console.error)
           })
         }
       })
