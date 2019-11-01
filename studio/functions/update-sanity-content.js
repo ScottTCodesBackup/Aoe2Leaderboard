@@ -279,20 +279,20 @@ exports.handler = (event, context) => {
           })
         } else if (match.teamGame && !match.teamGame.matchData) {
           const matchID = docID
-          const playerRefs = match.teamGame.players
+          const playerTeams = [...match.teamGame.teams]
           const seasonInfo = client.getDocument(`${season._ref}`)
 
           seasonInfo.then(season => {
-            const playerData = []
-
-            playerRefs.map(item => {
-              playerData.push({
-                score: item.score,
-                ...season.players.find(itemInner => itemInner.ref._ref === item.player._ref)
+            playerTeams.map(item => {
+              item.players.map((player, index) => {
+                item.players[index] = {
+                  score: item.score,
+                  ...season.players.find(itemInner => itemInner.ref._ref === player._ref)
+                }
               })
             })
 
-            const matchDataObj = teamGame(playerData)
+            const matchDataObj = teamGame(playerTeams)
 
             matchID
               .reduce(
