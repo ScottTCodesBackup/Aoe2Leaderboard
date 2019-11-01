@@ -153,6 +153,7 @@ exports.handler = (event, context) => {
     }
 
     for (let i = 0; length > i; i += 1) {
+      const team1Score = matchData[i].score
       const team1 = matchData[i].players
 
       for (let j = 0; team1.length > j; j += 1) {
@@ -160,6 +161,7 @@ exports.handler = (event, context) => {
         const player1Index = findIndex(player1._key, team1)
 
         for (let k = i + 1; length > k; k += 1) {
+          const team2Score = matchData[k].score
           const team2 = matchData[k].players
 
           for (let l = 0; team2.length > l; l += 1) {
@@ -172,7 +174,7 @@ exports.handler = (event, context) => {
             let player1newRating
             let player2newRating
 
-            if (team1.score < team2.score) {
+            if (team1Score < team2Score) {
               player1newRating =
                 updateRating(player1Expected, 1, player1.rank) -
                 team1[player1Index].rank
@@ -186,6 +188,14 @@ exports.handler = (event, context) => {
               player2newRating =
                 updateRating(player2Expected, 1, player2.rank) -
                 team2[player2Index].rank
+            }
+
+            if (!team1[player1Index].difference) {
+              team1[player1Index].difference = 0
+            }
+
+            if (!team2[player2Index].difference) {
+              team2[player2Index].difference = 0
             }
 
             team1[player1Index].difference += player1newRating
@@ -286,7 +296,6 @@ exports.handler = (event, context) => {
             playerTeams.map(item => {
               item.players.map((player, index) => {
                 item.players[index] = {
-                  score: item.score,
                   ...season.players.find(itemInner => itemInner.ref._ref === player._ref)
                 }
               })
