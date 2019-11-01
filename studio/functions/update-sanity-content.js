@@ -180,7 +180,6 @@ exports.handler = (event, context) => {
                 updateRating(player2Expected, 0, player2.rank) -
                 team2[player2Index].rank
             } else {
-              console.log('teamn1')
               player1newRating =
                 updateRating(player1Expected, 0, player1.rank) -
                 team1[player1Index].rank
@@ -273,6 +272,32 @@ exports.handler = (event, context) => {
               .reduce(
                 (trx, id) =>
                   trx.patch(id, patch => patch.setIfMissing({matchData: matchDataObj})),
+                client.transaction()
+              )
+              .commit()
+              .catch(console.error)
+          })
+        } else if (match.teamGame && !match.freeForAll.matchData) {
+          const matchID = docID
+          const playerRefs = match.teamGame.players
+          const seasonInfo = client.getDocument(`${season._ref}`)
+
+          seasonInfo.then(season => {
+            const playerData = []
+
+            playerRefs.map(item => {
+              playerData.push({
+                score: item.score,
+                ...season.players.find(itemInner => itemInner.ref._ref === item.player._ref)
+              })
+            })
+
+            const matchDataObj = teamGame(playerData)
+
+            matchID
+              .reduce(
+                (trx, id) =>
+                  trx.patch(id, patch => patch.set({matchData: matchDataObj})),
                 client.transaction()
               )
               .commit()
