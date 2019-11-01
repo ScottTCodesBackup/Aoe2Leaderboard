@@ -277,7 +277,7 @@ exports.handler = (event, context) => {
               .commit()
               .catch(console.error)
           })
-        } else if (match.teamGame && !match.freeForAll.matchData) {
+        } else if (match.teamGame && !match.teamGame.matchData) {
           const matchID = docID
           const playerRefs = match.teamGame.players
           const seasonInfo = client.getDocument(`${season._ref}`)
