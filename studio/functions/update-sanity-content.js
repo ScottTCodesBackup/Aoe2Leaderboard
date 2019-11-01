@@ -50,13 +50,22 @@ exports.handler = (event, context) => {
     matchData[0].difference = player1NewRank - player1.rank
     matchData[1].difference = player2NewRank - player2.rank
 
-    return matchData
+    const seasonUpdate = [{
+      _key: player1._key,
+      rank: player1.rank
+    }, {
+      _key: player2._key,
+      rank: player2.rank
+    }]
+
+    return [matchData, seasonUpdate]
   }
 
   const freeForAll = players => {
     const length = players.length
     const gamesPlayed = length - 1
     const matchData = []
+    const seasonUpdate = []
     let kFactorAdjuster = (1 - gamesPlayed / 10) / 2
     if (kFactorAdjuster < 0.4) {
       kFactorAdjuster = 0.4
@@ -118,16 +127,22 @@ exports.handler = (event, context) => {
 
           matchData[player1Index].newRank =
               matchData[player1Index].rank + matchData[player1Index].difference
+
+          seasonUpdate.push({
+            _key: matchData[player1Index]._key,
+            rank: matchData[player1Index].rank
+          })
         }
       }
     }
 
-    return matchData
+    return [matchData, seasonUpdate]
   }
 
   const teamGame = teams => {
     const length = teams.length
     const matchData = [...teams]
+    const seasonUpdate = []
     let gamesPlayed = 0
 
     for (let i = 0; length > i; i += 1) {
@@ -207,10 +222,15 @@ exports.handler = (event, context) => {
               team2[player2Index].rank + team2[player2Index].difference
           }
         }
+
+        seasonUpdate.push({
+          _key: team1[player1Index]._key,
+          rank: team1[player1Index].newRank
+        })
       }
     }
 
-    return matchData
+    return [matchData, seasonUpdate]
   }
 
   const {body} = event
@@ -255,9 +275,15 @@ exports.handler = (event, context) => {
             matchID
               .reduce(
                 (trx, id) =>
-                  trx.patch(id, patch => patch.setIfMissing({matchData: matchDataObj})),
+                  trx.patch(id, patch => patch.setIfMissing({matchData: matchDataObj[0]})),
                 client.transaction()
               )
+              .commit()
+              .catch(console.error)
+
+            client
+              .patch(`${season._ref}`)
+              .set({players: matchDataObj[1]})
               .commit()
               .catch(console.error)
           })
@@ -281,9 +307,15 @@ exports.handler = (event, context) => {
             matchID
               .reduce(
                 (trx, id) =>
-                  trx.patch(id, patch => patch.setIfMissing({matchData: matchDataObj})),
+                  trx.patch(id, patch => patch.setIfMissing({matchData: matchDataObj[0]})),
                 client.transaction()
               )
+              .commit()
+              .catch(console.error)
+
+            client
+              .patch(`${season._ref}`)
+              .set({players: matchDataObj[1]})
               .commit()
               .catch(console.error)
           })
@@ -306,9 +338,15 @@ exports.handler = (event, context) => {
             matchID
               .reduce(
                 (trx, id) =>
-                  trx.patch(id, patch => patch.set({matchData: matchDataObj})),
+                  trx.patch(id, patch => patch.set({matchData: matchDataObj[0]})),
                 client.transaction()
               )
+              .commit()
+              .catch(console.error)
+
+            client
+              .patch(`${season._ref}`)
+              .set({players: matchDataObj[1]})
               .commit()
               .catch(console.error)
           })
