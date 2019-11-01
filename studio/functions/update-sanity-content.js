@@ -125,6 +125,85 @@ exports.handler = (event, context) => {
     return matchData
   }
 
+  const teamGame = teams => {
+    const length = teams.length
+    const matchData = [...teams]
+    let gamesPlayed = 0
+
+    for (let i = 0; length > i; i += 1) {
+      const currTeam = teams[i]
+
+      for (let j = 0; j < currTeam.length; j += 1) {
+        if (i >= 1) {
+          gamesPlayed += 1
+        }
+      }
+    }
+
+    let kFactorAdjuster = 1 - gamesPlayed / 10
+    if (kFactorAdjuster < 0.4) {
+      kFactorAdjuster = 0.4
+    }
+
+    const kFactor = 32 * kFactorAdjuster
+
+    const updateRating = (expected, actual, current) => {
+      const newRating = Math.round(current + kFactor * (actual - expected))
+      return newRating
+    }
+
+    for (let i = 0; length > i; i += 1) {
+      const team1 = matchData[i].players
+
+      for (let j = 0; team1.length > j; j += 1) {
+        const player1 = team1[j]
+        const player1Index = findIndex(player1._key, team1)
+
+        for (let k = i + 1; length > k; k += 1) {
+          const team2 = matchData[k].players
+
+          for (let l = 0; team2.length > l; l += 1) {
+            const player2 = team2[l]
+            const player2Index = findIndex(player2._key, team2)
+
+            const player1Expected = getExpected(player1.rank, player2.rank)
+            const player2Expected = getExpected(player2.rank, player1.rank)
+
+            let player1newRating
+            let player2newRating
+
+            if (team1.score < team2.score) {
+              player1newRating =
+                updateRating(player1Expected, 1, player1.rank) -
+                team1[player1Index].rank
+              player2newRating =
+                updateRating(player2Expected, 0, player2.rank) -
+                team2[player2Index].rank
+            } else {
+              console.log('teamn1')
+              player1newRating =
+                updateRating(player1Expected, 0, player1.rank) -
+                team1[player1Index].rank
+              player2newRating =
+                updateRating(player2Expected, 1, player2.rank) -
+                team2[player2Index].rank
+            }
+
+            team1[player1Index].difference += player1newRating
+            team2[player2Index].difference += player2newRating
+
+            team1[player1Index].newRank =
+              team1[player1Index].rank + team1[player1Index].difference
+            team2[player2Index].newRank =
+              team2[player2Index].rank + team2[player2Index].difference
+          }
+        }
+      }
+    }
+
+    return matchData
+  }
+
   const {body} = event
   if (body) {
     const bodyParsed = JSON.parse(body)
