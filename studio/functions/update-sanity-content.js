@@ -283,7 +283,7 @@ exports.handler = (event, context) => {
               .catch(console.error)
 
             client
-              .patch(`${season._ref}`)
+              .patch(seasonRef)
               .set({players: matchDataObj[1]})
               .commit()
               .catch(console.error)
@@ -316,7 +316,7 @@ exports.handler = (event, context) => {
               .catch(console.error)
 
             client
-              .patch(`${season._ref}`)
+              .patch(seasonRef)
               .set({players: matchDataObj[1]})
               .commit()
               .catch(console.error)
@@ -350,7 +350,7 @@ exports.handler = (event, context) => {
               .catch(console.error)
 
             client
-              .patch(`${season._ref}`)
+              .patch(seasonRef)
               .set({players: matchDataObj[1]})
               .commit()
               .catch(console.error)
