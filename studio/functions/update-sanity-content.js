@@ -48,6 +48,7 @@ exports.handler = (event, context) => {
       difference: 0,
       name: player1.name,
       ref: player1.ref,
+      score: player1.score
     })
 
     matchData.push({
@@ -55,6 +56,7 @@ exports.handler = (event, context) => {
       difference: 0,
       name: player2.name,
       ref: player2.ref,
+      score: player2.score
     })
 
     const player1Expected = getExpected(player1.rank, player2.rank)
