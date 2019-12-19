@@ -170,14 +170,24 @@ exports.handler = (event, context) => {
           matchData[player1Index].newRank =
               matchData[player1Index].rank + matchData[player1Index].difference
 
-          seasonUpdate.push({
+          console.log({
             _key: matchData[player1Index]._key,
             _type: "player",
-            losses: player1.score > 1 ? player1.losses += 1 : player1.losses,
+            losses: player1.score > 1 ? matchData[player1Index].losses += 1 : matchData[player1Index].losses,
             name: matchData[player1Index].name,
             rank: matchData[player1Index].newRank,
             ref: matchData[player1Index].ref,
-            wins: player1.score === 1 ? player1.wins += 1 : player1.wins,
+            wins: player1.score === 1 ? matchData[player1Index].wins += 1 : matchData[player1Index].wins,
+          })
+              
+          seasonUpdate.push({
+            _key: matchData[player1Index]._key,
+            _type: "player",
+            losses: player1.score > 1 ? matchData[player1Index].losses += 1 : matchData[player1Index].losses,
+            name: matchData[player1Index].name,
+            rank: matchData[player1Index].newRank,
+            ref: matchData[player1Index].ref,
+            wins: player1.score === 1 ? matchData[player1Index].wins += 1 : matchData[player1Index].wins,
           })
         }
       }
