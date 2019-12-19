@@ -2,9 +2,9 @@ const sanityClient = require('@sanity/client')
 
 exports.handler = (event, context) => {
   const mergeArrays = (arr1, arr2) => {
-    const mergedArr = [];
+    const mergedArr = []
   
-    arr1.map((item, index) => {
+    arr1.map(item => {
       const foundItem = arr2.filter(player => (player._key === item._key));
       
       if (foundItem.length > 0) {
@@ -12,10 +12,10 @@ exports.handler = (event, context) => {
       } else {
         mergedArr.push(item);    
       }
-    });
+    })
     
     return mergedArr;
-  };
+  }
 
   const getExpected = (a, b) => {
     return 1 / (1 + Math.pow(10, (b - a) / 400))
@@ -83,7 +83,7 @@ exports.handler = (event, context) => {
       _type: "player",
       name: player1.name,
       ref: player1.ref,
-      losses: player1.score < player2.score ? player1.wins += 1 : player1.wins,
+      losses: player1.score < player2.score ? player1.losses += 1 : player1.losses,
       wins: player1.score > player2.score ? player1.wins += 1 : player1.wins
     }, {
       _key: player2._key,
@@ -91,7 +91,7 @@ exports.handler = (event, context) => {
       _type: "player",
       name: player2.name,
       ref: player2.ref,
-      losses: player1.score > player2.score ? player2.wins += 1 : player2.wins,
+      losses: player1.score > player2.score ? player2.losses += 1 : player2.losses,
       wins: player1.score < player2.score ? player2.wins += 1 : player2.wins
     }]
 
