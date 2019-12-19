@@ -30,11 +30,15 @@ exports.handler = (event, context) => {
     matchData.push({
       rank: player1.rank,
       difference: 0,
+      name: player1.name,
+      ref: player1.ref,
     })
 
     matchData.push({
       rank: player2.rank,
       difference: 0,
+      name: player2.name,
+      ref: player2.ref,
     })
 
     const player1Expected = getExpected(player1.rank, player2.rank)
@@ -59,7 +63,7 @@ exports.handler = (event, context) => {
 
     const seasonUpdate = [{
       _key: player1._key,
-      rank: player1.rank,
+      rank: player1.newRank,
       _type: "player",
       name: player1.name,
       ref: player1.ref,
@@ -67,7 +71,7 @@ exports.handler = (event, context) => {
       wins: player1.score === 1 ? player1.wins += 1 : player1.wins
     }, {
       _key: player2._key,
-      rank: player2.rank,
+      rank: player2.newRank,
       _type: "player",
       name: player2.name,
       ref: player2.ref,
