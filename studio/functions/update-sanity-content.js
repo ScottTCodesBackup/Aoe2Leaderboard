@@ -63,7 +63,7 @@ exports.handler = (event, context) => {
     let player1NewRank
     let player2NewRank
 
-    if (player1.score > player2) {
+    if (player1.score > player2.score) {
       player1NewRank = updateRating(player1Expected, 1, player1.rank)
       player2NewRank = updateRating(player2Expected, 0, player2.rank)
     } else {
@@ -79,20 +79,20 @@ exports.handler = (event, context) => {
 
     const seasonUpdate = [{
       _key: player1._key,
-      rank: player1.newRank,
+      rank: player1NewRank,
       _type: "player",
       name: player1.name,
       ref: player1.ref,
-      losses: player1.score < player2 ? player1.wins += 1 : player1.wins,
-      wins: player1.score > player2 ? player1.wins += 1 : player1.wins
+      losses: player1.score < player2.score ? player1.wins += 1 : player1.wins,
+      wins: player1.score > player2.score ? player1.wins += 1 : player1.wins
     }, {
       _key: player2._key,
-      rank: player2.newRank,
+      rank: player2NewRank,
       _type: "player",
       name: player2.name,
       ref: player2.ref,
-      losses: player1.score > player2 ? player2.wins += 1 : player2.wins,
-      wins: player1.score < player2 ? player2.wins += 1 : player2.wins
+      losses: player1.score > player2.score ? player2.wins += 1 : player2.wins,
+      wins: player1.score < player2.score ? player2.wins += 1 : player2.wins
     }]
 
     return [matchData, seasonUpdate]
@@ -339,7 +339,6 @@ exports.handler = (event, context) => {
               .catch(console.error)
 
             const mergedSeasonData = mergeArrays(season.players, matchDataObj[1]);
-            console.log(season, season.players, matchDataObj[1], mergedSeasonData)
 
             client
               .patch(seasonRef)
