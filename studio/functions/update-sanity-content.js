@@ -172,17 +172,12 @@ exports.handler = (event, context) => {
 
           seasonUpdate.push({
             _key: matchData[player1Index]._key,
-            rank: matchData[player1Index].rank
-          })
-
-          seasonUpdate.push({
-            _key: matchData[player1Index]._key,
             _type: "player",
-            losses: matchData[player1Index].score > 1 ? matchData[player1Index].wins += 1 : matchData[player1Index].wins,
+            losses: player1.score > 1 ? player1.losses += 1 : player1.losses,
             name: matchData[player1Index].name,
             rank: matchData[player1Index].newRank,
             ref: matchData[player1Index].ref,
-            wins: matchData[player1Index].score === 1 ? matchData[player1Index].wins += 1 : matchData[player1Index].wins,
+            wins: player1.score === 1 ? player1.wins += 1 : player1.wins,
           })
         }
       }
