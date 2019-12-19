@@ -67,16 +67,16 @@ exports.handler = (event, context) => {
       _type: "player",
       name: player1.name,
       ref: player1.ref,
-      losses: player1.score > 1 ? player1.wins += 1 : player1.wins,
-      wins: player1.score === 1 ? player1.wins += 1 : player1.wins
+      losses: player1.score < player2 ? player1.wins += 1 : player1.wins,
+      wins: player1.score > player2 ? player1.wins += 1 : player1.wins
     }, {
       _key: player2._key,
       rank: player2.newRank,
       _type: "player",
       name: player2.name,
       ref: player2.ref,
-      losses: player2.score > 1 ? player2.wins += 1 : player2.wins,
-      wins: player2.score === 1 ? player2.wins += 1 : player2.wins
+      losses: player1.score > player2 ? player2.wins += 1 : player2.wins,
+      wins: player1.score < player2 ? player2.wins += 1 : player2.wins
     }]
 
     return [matchData, seasonUpdate]
