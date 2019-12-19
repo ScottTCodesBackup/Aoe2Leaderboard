@@ -288,7 +288,8 @@ exports.handler = (event, context) => {
     return [matchData, seasonUpdate]
   }
 
-  const {body} = event
+  const { body } = event
+
   if (body) {
     const bodyParsed = JSON.parse(body)
 
@@ -337,6 +338,7 @@ exports.handler = (event, context) => {
               .commit()
               .catch(console.error)
 
+            console.log(season, season.players, matchDataObj[1])
             const mergedSeasonData = mergeArrays(season.players, matchDataObj[1]);
 
             client
