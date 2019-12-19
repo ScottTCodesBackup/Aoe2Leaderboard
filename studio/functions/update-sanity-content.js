@@ -1,6 +1,22 @@
 const sanityClient = require('@sanity/client')
 
 exports.handler = (event, context) => {
+  const mergeArrays = (arr1, arr2) => {
+    const mergedArr = [];
+  
+    arr1.map((item, index) => {
+      const foundItem = arr2.filter(player => (player._key === item._key));
+      
+      if (foundItem.length > 0) {
+        mergedArr.push(foundItem[0]);    
+      } else {
+        mergedArr.push(item);    
+      }
+    });
+    
+    return mergedArr;
+  };
+
   const getExpected = (a, b) => {
     return 1 / (1 + Math.pow(10, (b - a) / 400))
   }
@@ -321,9 +337,11 @@ exports.handler = (event, context) => {
               .commit()
               .catch(console.error)
 
+            const mergedSeasonData = mergeArrays(season.players, matchDataObj[1]);
+
             client
               .patch(seasonRef)
-              .set({players: matchDataObj[1]})
+              .set({players: mergedSeasonData})
               .commit()
               .catch(console.error)
           })
@@ -354,9 +372,11 @@ exports.handler = (event, context) => {
               .commit()
               .catch(console.error)
 
+            const mergedSeasonData = mergeArrays(season.players, matchDataObj[1]);
+
             client
               .patch(seasonRef)
-              .set({players: matchDataObj[1]})
+              .set({players: mergedSeasonData})
               .commit()
               .catch(console.error)
           })
@@ -386,9 +406,11 @@ exports.handler = (event, context) => {
               .commit()
               .catch(console.error)
 
+            const mergedSeasonData = mergeArrays(season.players, matchDataObj[1]);
+
             client
               .patch(seasonRef)
-              .set({players: matchDataObj[1]})
+              .set({players: mergedSeasonData})
               .commit()
               .catch(console.error)
           })
