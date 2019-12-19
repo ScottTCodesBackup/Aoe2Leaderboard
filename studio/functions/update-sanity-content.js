@@ -279,7 +279,11 @@ exports.handler = (event, context) => {
                   trx.patch(id, patch => patch.setIfMissing({matchData: matchDataObj[0]})),
                 client.transaction()
               )
-              .patch(seasonRef)
+              .commit()
+              .catch(console.error)
+
+            client
+              .patch(`${season._ref}`)
               .set({players: matchDataObj[1]})
               .commit()
               .catch(console.error)
@@ -308,8 +312,12 @@ exports.handler = (event, context) => {
                   trx.patch(id, patch => patch.setIfMissing({matchData: matchDataObj[0]})),
                 client.transaction()
               )
-              .patch(seasonRef)
-              .set({ players: matchDataObj[1] })
+              .commit()
+              .catch(console.error)
+
+            client
+              .patch(`${season._ref}`)
+              .set({players: matchDataObj[1]})
               .commit()
               .catch(console.error)
           })
@@ -338,7 +346,11 @@ exports.handler = (event, context) => {
                   trx.patch(id, patch => patch.set({matchData: matchDataObj[0]})),
                 client.transaction()
               )
-              .patch(seasonRef)
+              .commit()
+              .catch(console.error)
+
+            client
+              .patch(`${season._ref}`)
               .set({players: matchDataObj[1]})
               .commit()
               .catch(console.error)
