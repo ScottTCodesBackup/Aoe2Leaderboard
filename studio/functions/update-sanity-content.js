@@ -258,7 +258,8 @@ exports.handler = (event, context) => {
         if (match.twoPlayer && !match.twoPlayer.matchData) {
           const matchID = docID
           const playerRefs = match.twoPlayer.players
-          const seasonInfo = client.getDocument(`${season._ref}`)
+          const seasonRef = `${season._ref}`
+          const seasonInfo = client.getDocument(seasonRef)
 
           seasonInfo.then(season => {
             const playerData = []
@@ -278,7 +279,7 @@ exports.handler = (event, context) => {
                   trx.patch(id, patch => patch.setIfMissing({matchData: matchDataObj[0]})),
                 client.transaction()
               )
-              .patch(`${season._ref}`)
+              .patch(seasonRef)
               .set({players: matchDataObj[1]})
               .commit()
               .catch(console.error)
@@ -286,7 +287,8 @@ exports.handler = (event, context) => {
         } else if (match.freeForAll && !match.freeForAll.matchData) {
           const matchID = docID
           const playerRefs = match.freeForAll.players
-          const seasonInfo = client.getDocument(`${season._ref}`)
+          const seasonRef = `${season._ref}`
+          const seasonInfo = client.getDocument(seasonRef)
 
           seasonInfo.then(season => {
             const playerData = []
@@ -306,15 +308,16 @@ exports.handler = (event, context) => {
                   trx.patch(id, patch => patch.setIfMissing({matchData: matchDataObj[0]})),
                 client.transaction()
               )
-              .patch(`${season._ref}`)
-              .set({players: matchDataObj[1]})
+              .patch(seasonRef)
+              .set({ players: matchDataObj[1] })
               .commit()
               .catch(console.error)
           })
         } else if (match.teamGame && !match.teamGame.matchData) {
           const matchID = docID
           const playerTeams = [...match.teamGame.teams]
-          const seasonInfo = client.getDocument(`${season._ref}`)
+          const seasonRef = `${season._ref}`
+          const seasonInfo = client.getDocument(seasonRef)
 
           seasonInfo.then(season => {
             playerTeams.map(item => {
@@ -327,7 +330,7 @@ exports.handler = (event, context) => {
 
             const matchDataObj = teamGame(playerTeams)
 
-            console.log(`${season._ref}`, {players: matchDataObj[1]})
+            console.log(seasonRef, {players: matchDataObj[1]})
 
             matchID
               .reduce(
@@ -335,7 +338,7 @@ exports.handler = (event, context) => {
                   trx.patch(id, patch => patch.set({matchData: matchDataObj[0]})),
                 client.transaction()
               )
-              .patch(`${season._ref}`)
+              .patch(seasonRef)
               .set({players: matchDataObj[1]})
               .commit()
               .catch(console.error)
