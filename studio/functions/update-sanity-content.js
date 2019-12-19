@@ -338,8 +338,8 @@ exports.handler = (event, context) => {
               .commit()
               .catch(console.error)
 
-            console.log(season, season.players, matchDataObj[1])
             const mergedSeasonData = mergeArrays(season.players, matchDataObj[1]);
+            console.log(season, season.players, matchDataObj[1], mergedSeasonData)
 
             client
               .patch(seasonRef)
