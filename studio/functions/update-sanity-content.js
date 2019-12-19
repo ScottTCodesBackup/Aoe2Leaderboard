@@ -27,8 +27,15 @@ exports.handler = (event, context) => {
       return newRating
     }
 
-    matchData.push({rank: player1.rank, difference: 0, name: player1.name})
-    matchData.push({rank: player2.rank, difference: 0, name: player2.name})
+    matchData.push({
+      rank: player1.rank,
+      difference: 0,
+    })
+
+    matchData.push({
+      rank: player2.rank,
+      difference: 0,
+    })
 
     const player1Expected = getExpected(player1.rank, player2.rank)
     const player2Expected = getExpected(player2.rank, player1.rank)
@@ -52,10 +59,20 @@ exports.handler = (event, context) => {
 
     const seasonUpdate = [{
       _key: player1._key,
-      rank: player1.rank
+      rank: player1.rank,
+      _type: "player",
+      name: player1.name,
+      ref: player1.ref,
+      losses: player1.score > 1 ? player1.wins += 1 : player1.wins,
+      wins: player1.score === 1 ? player1.wins += 1 : player1.wins
     }, {
       _key: player2._key,
-      rank: player2.rank
+      rank: player2.rank,
+      _type: "player",
+      name: player2.name,
+      ref: player2.ref,
+      losses: player2.score > 1 ? player2.wins += 1 : player2.wins,
+      wins: player2.score === 1 ? player2.wins += 1 : player2.wins
     }]
 
     return [matchData, seasonUpdate]
@@ -83,7 +100,10 @@ exports.handler = (event, context) => {
         rank: players[i].rank,
         difference: 0,
         name: players[i].name,
-        _key: players[i]._key
+        _key: players[i]._key,
+        wins: players[i].wins,
+        losses: players[i].losses,
+        ref: players[i].ref,
       })
     }
 
@@ -131,6 +151,16 @@ exports.handler = (event, context) => {
           seasonUpdate.push({
             _key: matchData[player1Index]._key,
             rank: matchData[player1Index].rank
+          })
+
+          seasonUpdate.push({
+            _key: matchData[player1Index]._key,
+            _type: "player",
+            losses: matchData[player1Index].score > 1 ? matchData[player1Index].wins += 1 : matchData[player1Index].wins,
+            name: matchData[player1Index].name,
+            rank: matchData[player1Index].newRank,
+            ref: matchData[player1Index].ref,
+            wins: matchData[player1Index].score === 1 ? matchData[player1Index].wins += 1 : matchData[player1Index].wins,
           })
         }
       }
@@ -225,7 +255,12 @@ exports.handler = (event, context) => {
 
         seasonUpdate.push({
           _key: team1[player1Index]._key,
-          rank: team1[player1Index].newRank
+          _type: "player",
+          losses: team1.score > 1 ? team1[player1Index].wins += 1 : team1[player1Index].wins,
+          name: team1[player1Index].name,
+          rank: team1[player1Index].newRank,
+          ref: team1[player1Index].ref,
+          wins: team1.score === 1 ? team1[player1Index].wins += 1 : team1[player1Index].wins,
         })
       }
     }
@@ -337,8 +372,6 @@ exports.handler = (event, context) => {
             })
 
             const matchDataObj = teamGame(playerTeams)
-
-            console.log(seasonRef, {players: matchDataObj[1]})
 
             matchID
               .reduce(
