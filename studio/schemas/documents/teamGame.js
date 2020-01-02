@@ -16,7 +16,7 @@ export default {
             {
               title: 'Team placed',
               name: 'score',
-              type: 'number'
+              type: 'number',
             },
             {
               title: 'Players',
@@ -28,14 +28,14 @@ export default {
                   type: 'reference',
                   name: 'player',
                   to: [{
-                    type: 'player'
-                  }]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
+                    type: 'player',
+                  }],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};

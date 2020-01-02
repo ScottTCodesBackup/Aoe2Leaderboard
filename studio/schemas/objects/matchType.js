@@ -10,28 +10,28 @@ export default {
     {
       type: 'twoPlayer',
       title: '1v1',
-      name: 'twoPlayer'
+      name: 'twoPlayer',
     },
     {
       type: 'teamGame',
       title: 'Team Game',
-      name: 'teamGame'
+      name: 'teamGame',
     },
     {
       type: 'freeForAll',
       title: 'Free for all',
-      name: 'freeForAll'
-    }
+      name: 'freeForAll',
+    },
   ],
   preview: {
     select: {
-      matchType: 'matchType'
+      matchType: 'matchType',
     },
-    prepare ({matchType}) {
+    prepare({ matchType }) {
       return {
         title: matchType,
-        subtitle: `${matchType}`
-      }
-    }
-  }
+        subtitle: `${matchType}`,
+      },
+    },
+  },
 }

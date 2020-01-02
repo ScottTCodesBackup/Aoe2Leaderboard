@@ -8,9 +8,9 @@ export default {
       fields: [
         {
           type: 'string',
-          name: 'name'
-        }
-      ]
-    }]
-  }]
-}
+          name: 'name',
+        },
+      ],
+    }],
+  }],
+};

@@ -8,13 +8,13 @@ export default {
       type: 'reference',
       name: 'season',
       to: [{
-        type: 'season'
-      }]
+        type: 'season',
+      }],
     },
     {
       type: 'matchType',
       title: 'Match',
-      name: 'match'
+      name: 'match',
     },
     {
       type: 'array',
@@ -22,17 +22,17 @@ export default {
       hidden: true,
       of: [
         {
-          type: 'normalGameObj'
+          type: 'normalGameObj',
         },
         {
-          type: 'teamGameObj'
-        }
-      ]
-    }
+          type: 'teamGameObj',
+        },
+      ],
+    },
   ],
   preview: {
     select: {
-      title: '_id'
-    }
-  }
-}
+      title: '_id',
+    },
+  },
+};

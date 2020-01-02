@@ -1,11 +1,10 @@
 const path = require('path')
 
 module.exports = {
-  extends: ['standard', 'standard-react'],
+  extends: ['standard', 'airbnb'],
   parser: 'babel-eslint',
   rules: {
-    'react/prop-types': 0,
-    'object-curly-spacing': ['error', 'never']
+    "no-underscore-dangle": 0
   },
   settings: {
     react: {

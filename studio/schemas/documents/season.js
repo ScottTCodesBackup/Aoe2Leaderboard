@@ -6,7 +6,7 @@ export default {
     {
       name: 'name',
       type: 'string',
-      title: 'Name'
+      title: 'Name',
     },
     {
       name: 'players',
@@ -20,35 +20,35 @@ export default {
             {
               name: 'name',
               type: 'string',
-              title: 'Player Name'
+              title: 'Player Name',
             },
             {
               name: 'rank',
               type: 'number',
-              title: 'Rank'
+              title: 'Rank',
             },
             {
               name: 'wins',
               type: 'number',
-              title: 'Wins'
+              title: 'Wins',
             },
             {
               name: 'losses',
               type: 'number',
-              title: 'Losses'
+              title: 'Losses',
             },
             {
               name: 'ref',
               type: 'reference',
               to: [
                 {
-                  type: 'player'
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  type: 'player',
+                },
+              ],
+            },
+          ],
+        },
+      ],
     },
     {
       name: 'leaderboard',
@@ -60,16 +60,16 @@ export default {
           type: 'reference',
           to: [
             {
-              type: 'player'
-            }
-          ]
-        }
-      ]
-    }
+              type: 'player',
+            },
+          ],
+        },
+      ],
+    },
   ],
   preview: {
     select: {
-      title: 'name'
-    }
-  }
-}
+      title: 'name',
+    },
+  },
+};

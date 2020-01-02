@@ -16,19 +16,19 @@ export default {
             {
               title: 'Player placed',
               name: 'score',
-              type: 'number'
+              type: 'number',
             },
             {
               title: 'Player',
               type: 'reference',
               name: 'player',
               to: [{
-                type: 'player'
-              }]
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
+                type: 'player',
+              }],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
