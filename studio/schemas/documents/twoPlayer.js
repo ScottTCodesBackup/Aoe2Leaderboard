@@ -1,3 +1,5 @@
+import civilizationsList from '../objects/civilizationsList';
+
 export default {
   name: 'twoPlayer',
   type: 'object',
@@ -26,6 +28,7 @@ export default {
                 type: 'player',
               }],
             },
+            civilizationsList,
           ],
         },
       ],

@@ -1,3 +1,5 @@
+import civilizationsList from '../objects/civilizationsList';
+
 export default {
   name: 'teamGame',
   type: 'object',
@@ -31,6 +33,7 @@ export default {
                     type: 'player',
                   }],
                 },
+                civilizationsList,
               ],
             },
           ],

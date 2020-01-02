@@ -86,6 +86,7 @@ exports.handler = (event) => {
         ref: player1.ref,
         losses: player1.score > player2.score ? (player1.losses += 1) : player1.losses,
         wins: player1.score < player2.score ? (player1.wins += 1) : player1.wins,
+        civilization: player1.civilization,
       },
       {
         _key: player2._key,
@@ -95,6 +96,7 @@ exports.handler = (event) => {
         ref: player2.ref,
         losses: player1.score < player2.score ? (player2.losses += 1) : player2.losses,
         wins: player1.score > player2.score ? (player2.wins += 1) : player2.wins,
+        civilization: player2.civilization,
       },
     ];
 
@@ -179,6 +181,7 @@ exports.handler = (event) => {
             ref: matchData[player1Index].ref,
             losses: matchData[player1Index].losses,
             wins: matchData[player1Index].wins,
+            civilization: matchData[player1Index].civilization,
           });
         }
       }
@@ -285,6 +288,7 @@ exports.handler = (event) => {
           rank: team1[player1Index].newRank,
           ref: team1[player1Index].ref,
           wins: team1Score === 1 ? (team1[player1Index].wins += 1) : team1[player1Index].wins,
+          civilization: team1[player1Index].civilization,
         });
       }
     }

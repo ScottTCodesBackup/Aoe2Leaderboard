@@ -1,6 +1,7 @@
 // 1. Import the TimeInput react component
-import matchSelector from '../../components/matchSelector'
+import matchSelector from '../../components/matchSelector';
 
+/* eslint-disable */
 export default {
   name: 'matchType',
   title: 'Match Type',
@@ -26,12 +27,6 @@ export default {
   preview: {
     select: {
       matchType: 'matchType',
-    },
-    prepare({ matchType }) {
-      return {
-        title: matchType,
-        subtitle: `${matchType}`,
-      },
     },
   },
 }
