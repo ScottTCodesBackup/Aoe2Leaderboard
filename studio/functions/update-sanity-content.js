@@ -3,18 +3,18 @@ const sanityClient = require('@sanity/client')
 exports.handler = (event, context) => {
   const mergeArrays = (arr1, arr2) => {
     const mergedArr = []
-  
+
     arr1.map(item => {
-      const foundItem = arr2.filter(player => (player._key === item._key));
-      
+      const foundItem = arr2.filter(player => player._key === item._key)
+
       if (foundItem.length > 0) {
-        mergedArr.push(foundItem[0]);    
+        mergedArr.push(foundItem[0])
       } else {
-        mergedArr.push(item);    
+        mergedArr.push(item)
       }
     })
-    
-    return mergedArr;
+
+    return mergedArr
   }
 
   const getExpected = (a, b) => {
@@ -65,7 +65,7 @@ exports.handler = (event, context) => {
     let player1NewRank
     let player2NewRank
 
-    if (player1.score > player2.score) {
+    if (player1.score < player2.score) {
       player1NewRank = updateRating(player1Expected, 1, player1.rank)
       player2NewRank = updateRating(player2Expected, 0, player2.rank)
     } else {
@@ -79,23 +79,26 @@ exports.handler = (event, context) => {
     matchData[0].difference = player1NewRank - player1.rank
     matchData[1].difference = player2NewRank - player2.rank
 
-    const seasonUpdate = [{
-      _key: player1._key,
-      rank: player1NewRank,
-      _type: "player",
-      name: player1.name,
-      ref: player1.ref,
-      losses: player1.score < player2.score ? player1.losses += 1 : player1.losses,
-      wins: player1.score > player2.score ? player1.wins += 1 : player1.wins
-    }, {
-      _key: player2._key,
-      rank: player2NewRank,
-      _type: "player",
-      name: player2.name,
-      ref: player2.ref,
-      losses: player1.score > player2.score ? player2.losses += 1 : player2.losses,
-      wins: player1.score < player2.score ? player2.wins += 1 : player2.wins
-    }]
+    const seasonUpdate = [
+      {
+        _key: player1._key,
+        rank: player1NewRank,
+        _type: 'player',
+        name: player1.name,
+        ref: player1.ref,
+        losses: player1.score > player2.score ? (player1.losses += 1) : player1.losses,
+        wins: player1.score < player2.score ? (player1.wins += 1) : player1.wins
+      },
+      {
+        _key: player2._key,
+        rank: player2NewRank,
+        _type: 'player',
+        name: player2.name,
+        ref: player2.ref,
+        losses: player1.score < player2.score ? (player2.losses += 1) : player2.losses,
+        wins: player1.score > player2.score ? (player2.wins += 1) : player2.wins
+      }
+    ]
 
     return [matchData, seasonUpdate]
   }
@@ -106,6 +109,7 @@ exports.handler = (event, context) => {
     const matchData = []
     const seasonUpdate = []
     let kFactorAdjuster = (1 - gamesPlayed / 10) / 2
+
     if (kFactorAdjuster < 0.4) {
       kFactorAdjuster = 0.4
     }
@@ -123,9 +127,9 @@ exports.handler = (event, context) => {
         difference: 0,
         name: players[i].name,
         _key: players[i]._key,
-        wins: players[i].wins,
-        losses: players[i].losses,
-        ref: players[i].ref,
+        wins: players[i].score === 1 ? players[i].wins += 1 : players[i].wins,
+        losses: players[i].score > 1 ? players[i].losses += 1 : players[i].losses,
+        ref: players[i].ref
       })
     }
 
@@ -144,18 +148,14 @@ exports.handler = (event, context) => {
 
           if (player1.score < player2.score) {
             player1newRating =
-                updateRating(player1Expected, 1, player1.rank) -
-                matchData[player1Index].rank
+              updateRating(player1Expected, 1, player1.rank) - matchData[player1Index].rank
             player2newRating =
-                updateRating(player2Expected, 0, player2.rank) -
-                matchData[player2Index].rank
+              updateRating(player2Expected, 0, player2.rank) - matchData[player2Index].rank
           } else {
             player1newRating =
-                updateRating(player1Expected, 0, player1.rank) -
-                matchData[player1Index].rank
+              updateRating(player1Expected, 0, player1.rank) - matchData[player1Index].rank
             player2newRating =
-                updateRating(player2Expected, 1, player2.rank) -
-                matchData[player2Index].rank
+              updateRating(player2Expected, 1, player2.rank) - matchData[player2Index].rank
           }
 
           matchData[player1Index].difference += player1newRating
@@ -168,26 +168,16 @@ exports.handler = (event, context) => {
           }
 
           matchData[player1Index].newRank =
-              matchData[player1Index].rank + matchData[player1Index].difference
+            matchData[player1Index].rank + matchData[player1Index].difference
 
-          console.log({
-            _key: matchData[player1Index]._key,
-            _type: "player",
-            losses: player1.score > 1 ? matchData[player1Index].losses += 1 : matchData[player1Index].losses,
-            name: matchData[player1Index].name,
-            rank: matchData[player1Index].newRank,
-            ref: matchData[player1Index].ref,
-            wins: player1.score === 1 ? matchData[player1Index].wins += 1 : matchData[player1Index].wins,
-          })
-              
           seasonUpdate.push({
             _key: matchData[player1Index]._key,
-            _type: "player",
-            losses: player1.score > 1 ? matchData[player1Index].losses += 1 : matchData[player1Index].losses,
+            _type: 'player',
             name: matchData[player1Index].name,
             rank: matchData[player1Index].newRank,
             ref: matchData[player1Index].ref,
-            wins: player1.score === 1 ? matchData[player1Index].wins += 1 : matchData[player1Index].wins,
+            losses: matchData[player1Index].losses,
+            wins: matchData[player1Index].wins
           })
         }
       }
@@ -248,18 +238,14 @@ exports.handler = (event, context) => {
 
             if (team1Score < team2Score) {
               player1newRating =
-                updateRating(player1Expected, 1, player1.rank) -
-                team1[player1Index].rank
+                updateRating(player1Expected, 1, player1.rank) - team1[player1Index].rank
               player2newRating =
-                updateRating(player2Expected, 0, player2.rank) -
-                team2[player2Index].rank
+                updateRating(player2Expected, 0, player2.rank) - team2[player2Index].rank
             } else {
               player1newRating =
-                updateRating(player1Expected, 0, player1.rank) -
-                team1[player1Index].rank
+                updateRating(player1Expected, 0, player1.rank) - team1[player1Index].rank
               player2newRating =
-                updateRating(player2Expected, 1, player2.rank) -
-                team2[player2Index].rank
+                updateRating(player2Expected, 1, player2.rank) - team2[player2Index].rank
             }
 
             if (!team1[player1Index].difference) {
@@ -273,21 +259,19 @@ exports.handler = (event, context) => {
             team1[player1Index].difference += player1newRating
             team2[player2Index].difference += player2newRating
 
-            team1[player1Index].newRank =
-              team1[player1Index].rank + team1[player1Index].difference
-            team2[player2Index].newRank =
-              team2[player2Index].rank + team2[player2Index].difference
+            team1[player1Index].newRank = team1[player1Index].rank + team1[player1Index].difference
+            team2[player2Index].newRank = team2[player2Index].rank + team2[player2Index].difference
           }
         }
 
         seasonUpdate.push({
           _key: team1[player1Index]._key,
-          _type: "player",
-          losses: team1.score > 1 ? team1[player1Index].wins += 1 : team1[player1Index].wins,
+          _type: 'player',
+          losses: team1Score > 1 ? (team1[player1Index].wins += 1) : team1[player1Index].wins,
           name: team1[player1Index].name,
           rank: team1[player1Index].newRank,
           ref: team1[player1Index].ref,
-          wins: team1.score === 1 ? team1[player1Index].wins += 1 : team1[player1Index].wins,
+          wins: team1Score === 1 ? (team1[player1Index].wins += 1) : team1[player1Index].wins
         })
       }
     }
@@ -295,7 +279,7 @@ exports.handler = (event, context) => {
     return [matchData, seasonUpdate]
   }
 
-  const { body } = event
+  const {body} = event
 
   if (body) {
     const bodyParsed = JSON.parse(body)
@@ -345,7 +329,7 @@ exports.handler = (event, context) => {
               .commit()
               .catch(console.error)
 
-            const mergedSeasonData = mergeArrays(season.players, matchDataObj[1]);
+            const mergedSeasonData = mergeArrays(season.players, matchDataObj[1])
 
             client
               .patch(seasonRef)
@@ -380,7 +364,7 @@ exports.handler = (event, context) => {
               .commit()
               .catch(console.error)
 
-            const mergedSeasonData = mergeArrays(season.players, matchDataObj[1]);
+            const mergedSeasonData = mergeArrays(season.players, matchDataObj[1])
 
             client
               .patch(seasonRef)
@@ -407,14 +391,13 @@ exports.handler = (event, context) => {
 
             matchID
               .reduce(
-                (trx, id) =>
-                  trx.patch(id, patch => patch.set({matchData: matchDataObj[0]})),
+                (trx, id) => trx.patch(id, patch => patch.set({matchData: matchDataObj[0]})),
                 client.transaction()
               )
               .commit()
               .catch(console.error)
 
-            const mergedSeasonData = mergeArrays(season.players, matchDataObj[1]);
+            const mergedSeasonData = mergeArrays(season.players, matchDataObj[1])
 
             client
               .patch(seasonRef)
