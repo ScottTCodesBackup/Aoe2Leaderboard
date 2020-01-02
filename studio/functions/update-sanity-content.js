@@ -453,6 +453,4 @@ exports.handler = (event) => {
       };
     }
   }
-
-  return true;
 };
