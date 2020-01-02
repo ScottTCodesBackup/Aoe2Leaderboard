@@ -267,7 +267,7 @@ exports.handler = (event, context) => {
         seasonUpdate.push({
           _key: team1[player1Index]._key,
           _type: 'player',
-          losses: team1Score > 1 ? (team1[player1Index].wins += 1) : team1[player1Index].wins,
+          losses: team1Score > 1 ? (team1[player1Index].losses += 1) : team1[player1Index].losses,
           name: team1[player1Index].name,
           rank: team1[player1Index].newRank,
           ref: team1[player1Index].ref,
