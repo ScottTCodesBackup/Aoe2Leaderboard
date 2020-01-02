@@ -5,7 +5,7 @@ exports.handler = (event) => {
     const mergedArr = [];
 
     arr1.map((item) => () => {
-      const foundItem = arr2.filter((player) => player._key === item._key);
+      const foundItem = arr2.filter((player) => player.player_key === item._key);
 
       if (foundItem.length > 0) {
         mergedArr.push(foundItem[0]);
@@ -32,16 +32,9 @@ exports.handler = (event) => {
   };
 
   const onevone = (players) => {
-    const matchData = [];
     const player1 = players[0];
     const player2 = players[1];
-
-    const updateRating = (expected, actual, current) => {
-      const newRating = Math.round(current + 32 * (actual - expected));
-      return newRating;
-    };
-
-    matchData.push(
+    const matchData = [
       {
         rank: player1.rank,
         difference: 0,
@@ -58,8 +51,12 @@ exports.handler = (event) => {
         score: player2.score,
         civilization: player2.civilization,
       },
-    );
+    ];
 
+    const updateRating = (expected, actual, current) => {
+      const newRating = Math.round(current + 32 * (actual - expected));
+      return newRating;
+    };
 
     const player1Expected = getExpected(player1.rank, player2.rank);
     const player2Expected = getExpected(player2.rank, player1.rank);
