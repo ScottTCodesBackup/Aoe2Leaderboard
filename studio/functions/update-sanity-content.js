@@ -4,8 +4,8 @@ exports.handler = (event) => {
   const mergeArrays = (arr1, arr2) => {
     const mergedArr = [];
 
-    arr1.map((item) => () => {
-      const foundItem = arr2.filter((player) => player.player_key === item._key);
+    arr1.map((item) => {
+      const foundItem = arr2.filter((player) => player._key === item._key);
 
       if (foundItem.length > 0) {
         mergedArr.push(foundItem[0]);
@@ -22,7 +22,7 @@ exports.handler = (event) => {
   const findIndex = (find, array) => {
     let index = null;
 
-    array.map((item, i) => () => {
+    array.map((item, i) => {
       if (item._key === find) {
         index = i;
       }
