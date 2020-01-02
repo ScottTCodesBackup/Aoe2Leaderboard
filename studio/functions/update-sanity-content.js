@@ -329,7 +329,8 @@ exports.handler = (event) => {
           seasonInfo.then((fetchedSeason) => {
             const playerData = [];
 
-            playerRefs.map((item) => () => {
+            /* eslint-disable */
+            playerRefs.map((item) => {
               playerData.push({
                 score: item.score,
                 ...fetchedSeason.players.find(
@@ -337,6 +338,7 @@ exports.handler = (event) => {
                 ),
               });
             });
+            /* eslint-enable */
 
             const matchDataObj = onevone(playerData);
 
@@ -367,7 +369,8 @@ exports.handler = (event) => {
           seasonInfo.then((fetchedSeason) => {
             const playerData = [];
 
-            playerRefs.map((item) => () => {
+            /* eslint-disable */
+            playerRefs.map((item) => {
               playerData.push({
                 score: item.score,
                 ...fetchedSeason.players.find(
@@ -375,6 +378,7 @@ exports.handler = (event) => {
                 ),
               });
             });
+            /* eslint-enable */
 
             const matchDataObj = freeForAll(playerData);
 
@@ -404,7 +408,7 @@ exports.handler = (event) => {
 
 
           seasonInfo.then((fetchedSeason) => {
-            /* eslint-disable*/
+            /* eslint-disable */
             playerTeams.map((item) => {
               item.players.map((playerObj, index) => {
                 item.players[index] = {
