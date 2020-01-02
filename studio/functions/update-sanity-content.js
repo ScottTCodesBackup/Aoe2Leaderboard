@@ -41,21 +41,25 @@ exports.handler = (event) => {
       return newRating;
     };
 
-    matchData.push({
-      rank: player1.rank,
-      difference: 0,
-      name: player1.name,
-      ref: player1.ref,
-      score: player1.score,
-    });
+    matchData.push(
+      {
+        rank: player1.rank,
+        difference: 0,
+        name: player1.name,
+        ref: player1.ref,
+        score: player1.score,
+        civilization: player1.civilization,
+      },
+      {
+        rank: player2.rank,
+        difference: 0,
+        name: player2.name,
+        ref: player2.ref,
+        score: player2.score,
+        civilization: player2.civilization,
+      },
+    );
 
-    matchData.push({
-      rank: player2.rank,
-      difference: 0,
-      name: player2.name,
-      ref: player2.ref,
-      score: player2.score,
-    });
 
     const player1Expected = getExpected(player1.rank, player2.rank);
     const player2Expected = getExpected(player2.rank, player1.rank);
@@ -86,7 +90,6 @@ exports.handler = (event) => {
         ref: player1.ref,
         losses: player1.score > player2.score ? (player1.losses += 1) : player1.losses,
         wins: player1.score < player2.score ? (player1.wins += 1) : player1.wins,
-        civilization: player1.civilization,
       },
       {
         _key: player2._key,
@@ -96,7 +99,6 @@ exports.handler = (event) => {
         ref: player2.ref,
         losses: player1.score < player2.score ? (player2.losses += 1) : player2.losses,
         wins: player1.score > player2.score ? (player2.wins += 1) : player2.wins,
-        civilization: player2.civilization,
       },
     ];
 
@@ -133,6 +135,7 @@ exports.handler = (event) => {
         wins: players[i].score === 1 ? playerWins += 1 : playerWins,
         losses: players[i].score > 1 ? playerLosses += 1 : playerLosses,
         ref: players[i].ref,
+        civilization: players[i].civilization,
       });
     }
 
@@ -181,7 +184,6 @@ exports.handler = (event) => {
             ref: matchData[player1Index].ref,
             losses: matchData[player1Index].losses,
             wins: matchData[player1Index].wins,
-            civilization: matchData[player1Index].civilization,
           });
         }
       }
@@ -288,7 +290,6 @@ exports.handler = (event) => {
           rank: team1[player1Index].newRank,
           ref: team1[player1Index].ref,
           wins: team1Score === 1 ? (team1[player1Index].wins += 1) : team1[player1Index].wins,
-          civilization: team1[player1Index].civilization,
         });
       }
     }
