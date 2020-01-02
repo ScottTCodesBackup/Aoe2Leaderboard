@@ -17,7 +17,7 @@ exports.handler = (event) => {
     return mergedArr;
   };
 
-  const getExpected = (a, b) => 1 / (1 + (10 ** (b - a) / 400));
+  const getExpected = (a, b) => 1 / (1 + (10 ** ((b - a) / 400)));
 
   const findIndex = (find, array) => {
     let index = null;
