@@ -226,6 +226,7 @@ exports.handler = (event) => {
 
       for (let j = 0; team1.length > j; j += 1) {
         const player1 = team1[j];
+        console.log(player1);
         const player1Index = findIndex(player1._key, team1);
 
         for (let k = i + 1; length > k; k += 1) {
