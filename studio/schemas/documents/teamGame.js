@@ -26,14 +26,21 @@ export default {
               type: 'array',
               of: [
                 {
-                  title: 'Player',
-                  type: 'reference',
-                  name: 'player',
-                  to: [{
-                    type: 'player',
-                  }],
+                  title: 'Team',
+                  name: 'team',
+                  type: 'object',
+                  fields: [
+                    {
+                      title: 'Player',
+                      type: 'reference',
+                      name: 'player',
+                      to: [{
+                        type: 'player',
+                      }],
+                    },
+                    civilizationsList,
+                  ],
                 },
-                civilizationsList,
               ],
             },
           ],

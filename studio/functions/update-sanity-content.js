@@ -404,10 +404,12 @@ exports.handler = (event) => {
 
           seasonInfo.then((fetchedSeason) => {
             playerTeams.map((item) => () => {
-              item.players.map((player) => () => {
+              item.players.map((playerObj) => () => {
                 /* eslint-disable-next-line */
-                player = {
-                  ...fetchedSeason.players.find((itemInner) => itemInner.ref._ref === player._ref),
+                playerObj = {
+                  ...fetchedSeason.players.find(
+                    (itemInner) => itemInner.ref._ref === playerObj.player._ref,
+                  ),
                 };
               });
             });
