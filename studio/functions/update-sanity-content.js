@@ -405,9 +405,9 @@ exports.handler = (event) => {
 
           seasonInfo.then((fetchedSeason) => {
             playerTeams.map((item) => () => {
-              item.players.map((playerObj) => () => {
+              item.players.map((playerObj, index) => () => {
                 /* eslint-disable-next-line */
-                playerObj = {
+                item.players[index] = {
                   ...fetchedSeason.players.find(
                     (itemInner) => itemInner.ref._ref === playerObj.player._ref,
                   ),
