@@ -1,11 +1,11 @@
 {
   "root": true,
-  "project": {
-    "name": "AoE2 Leaderboard"
-  },
   "api": {
     "projectId": "v7sgze3m",
     "dataset": "production"
+  },
+  "project": {
+    "name": "AoE2 Leaderboard"
   },
   "plugins": [
     "@sanity/base",

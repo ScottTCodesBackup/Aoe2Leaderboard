@@ -6,12 +6,12 @@ export default {
     {
       name: 'name',
       type: 'string',
-      title: 'Name'
-    }
+      title: 'Name',
+    },
   ],
   preview: {
     select: {
-      title: 'name'
-    }
-  }
-}
+      title: 'name',
+    },
+  },
+};

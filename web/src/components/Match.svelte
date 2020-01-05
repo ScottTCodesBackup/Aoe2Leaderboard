@@ -1,5 +1,10 @@
 <script>
+  export let data 
+  export let index 
+  export let players 
   import Swords from "../theme/Swords.svelte";
+
+  console.log(data);
 </script>
 
 <style>
@@ -32,6 +37,12 @@
 
   .loss {
     color: #166b8c;
+  }
+
+  .player_name {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .title {
@@ -89,13 +100,13 @@
       <span>+/-</span>
     </div>
     <div>
-      <span>Player 1</span>
+      <span class="player_name">Player 1</span>
       <span>1st</span>
       <span>2115</span>
       <span class="gain">+24</span>
     </div>
     <div>
-      <span>Player 2</span>
+      <span class="player_name">Player 2</span>
       <span>3rd</span>
       <span>2035</span>
       <span class="loss">-16</span>

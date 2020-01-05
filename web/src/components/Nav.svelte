@@ -137,8 +137,8 @@
     <h2>AoE2 Leaderboard</h2>
   </div>
   <div class={`menu${active ? ' active' : ''}`}>
-    <a>Match Overview</a>
-    <a>Standings</a>
+    <a href="/">Match Overview</a>
+    <a href="/">Standings</a>
   </div>
 </nav>
 

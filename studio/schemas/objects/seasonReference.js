@@ -8,14 +8,14 @@ export default {
       type: 'reference',
       to: [
         {
-          type: 'season'
-        }
-      ]
-    }
+          type: 'season',
+        },
+      ],
+    },
   ],
   preview: {
     select: {
-      title: 'season.name'
-    }
-  }
-}
+      title: 'season.name',
+    },
+  },
+};

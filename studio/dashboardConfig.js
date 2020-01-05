@@ -1,6 +1,6 @@
 export default {
   widgets: [
-    {name: 'structure-menu'},
+    { name: 'structure-menu' },
     {
       name: 'project-info',
       options: {
@@ -13,36 +13,36 @@ export default {
               sites: [
                 {
                   buildHookId: '5cf7a6fd15f204f48068c03a',
-                  title: 'Sanity Studio',
-                  name: 'sanity-sapper-blog-studio-tuqbktp5',
-                  apiId: 'a5fb70ec-b6a4-48f6-85a7-96064c38640b'
+                  title: 'Leaderboard Studio',
+                  name: 'aoe2leaderboard-studio',
+                  apiId: 'e959ed83-e9f1-4802-9243-1bdbc0a2f2cd',
                 },
                 {
-                  buildHookId: '5cf7a6fd8ae5eadca402cc7a',
-                  title: 'Blog Website',
-                  name: 'sanity-sapper-blog-web-iqehtvd5',
-                  apiId: '8c9e5a83-a8bf-4bad-a813-2838dbbdc9ba'
-                }
-              ]
-            }
-          }
+                  buildHookId: '5d66b10148920a61b47907f7',
+                  title: 'Leaderboard Frontend',
+                  name: 'aoe2leaderboard',
+                  apiId: '054e97e3-1592-444e-b294-606dfca9aaae',
+                },
+              ],
+            },
+          },
         ],
         data: [
           {
             title: 'GitHub repo',
             value: 'https://github.com/ScottTCodes/sanity-sapper-blog',
-            category: 'Code'
+            category: 'Code',
           },
-          {title: 'Frontend', value: 'https://sanity-sapper-blog-web-iqehtvd5.netlify.com', category: 'apps'}
-        ]
-      }
+          { title: 'Frontend', value: 'https://aoe2leaderboard.netlify.com/', category: 'apps' },
+        ],
+      },
     },
-    {name: 'project-users', layout: {height: 'auto'}}
+    { name: 'project-users', layout: { height: 'auto' } },
     // {
     //   name: 'document-list',
     //   options: {title: 'Recent recorded games', order: '_createdAt desc', types: ['post']},
     //   layout: {width: 'medium'}
     // }
     // Change this to pull in latest matches
-  ]
-}
+  ],
+};

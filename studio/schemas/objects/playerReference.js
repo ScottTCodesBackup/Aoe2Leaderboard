@@ -8,14 +8,14 @@ export default {
       type: 'reference',
       to: [
         {
-          type: 'player'
-        }
-      ]
-    }
+          type: 'player',
+        },
+      ],
+    },
   ],
   preview: {
     select: {
-      title: 'player.name'
-    }
-  }
-}
+      title: 'player.name',
+    },
+  },
+};

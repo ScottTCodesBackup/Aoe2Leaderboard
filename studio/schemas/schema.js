@@ -1,18 +1,26 @@
 // First, we must import the schema creator
-import createSchema from 'part:@sanity/base/schema-creator'
+/* eslint-disable-next-line */
+import createSchema from 'part:@sanity/base/schema-creator';
 
 // Then import schema types from any plugins that might expose them
-import schemaTypes from 'all:part:@sanity/base/schema-type'
+/* eslint-disable-next-line */
+import schemaTypes from 'all:part:@sanity/base/schema-type';
 
 // document schemas
-import siteSettings from './documents/siteSettings'
-import player from './documents/player'
-import season from './documents/season'
-import match from './documents/match'
+import siteSettings from './documents/siteSettings';
+import player from './documents/player';
+import season from './documents/season';
+import match from './documents/match';
+import teamGame from './documents/teamGame';
+import twoPlayer from './documents/twoPlayer';
+import freeForAll from './documents/freeForAll';
+import matchType from './objects/matchType';
 
 // Object types
-import playerReference from './objects/playerReference'
-import seasonReference from './objects/seasonReference'
+import playerReference from './objects/playerReference';
+import seasonReference from './objects/seasonReference';
+import normalGameObj from './objects/normalGameObj';
+import teamGameObj from './objects/teamGameObj';
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -28,8 +36,14 @@ export default createSchema({
     player,
     season,
     seasonReference,
-    match
+    match,
+    teamGame,
+    twoPlayer,
+    freeForAll,
+    matchType,
+    normalGameObj,
+    teamGameObj,
     // When added to this list, object types can be used as
     // { type: 'typename' } in other document schemas
-  ])
-})
+  ]),
+});
