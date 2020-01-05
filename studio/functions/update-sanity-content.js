@@ -34,6 +34,7 @@ exports.handler = (event) => {
   const onevone = (players) => {
     const player1 = players[0];
     const player2 = players[1];
+    console.log(player1);
     const matchData = [
       {
         rank: player1.rank,
