@@ -34,7 +34,6 @@ exports.handler = (event) => {
   const onevone = (players) => {
     const player1 = players[0];
     const player2 = players[1];
-    console.log(player1);
     const matchData = [
       {
         rank: player1.rank,
@@ -331,6 +330,7 @@ exports.handler = (event) => {
             playerRefs.map((item) => {
               playerData.push({
                 score: item.score,
+                civilization: item.civilization,
                 ...fetchedSeason.players.find(
                   (itemInner) => itemInner.ref._ref === item.player._ref,
                 ),
