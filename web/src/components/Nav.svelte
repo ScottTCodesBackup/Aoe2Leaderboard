@@ -22,7 +22,10 @@
     width: 100%;
     padding: 10px 0;
     position: relative;
-    background: #f24150;
+    background: #480048; /* Old browsers */
+    background: -moz-linear-gradient(-45deg,  #480048 0%, #c04848 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(-45deg,  #480048 0%,#c04848 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(135deg,  #480048 0%,#c04848 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     box-sizing: border-box;
   }
 

@@ -2,7 +2,7 @@
   export let data 
   export let index 
   export let players 
-  import Swords from "../theme/Swords.svelte";
+  import Swords from "../components/svg/Swords.svelte";
 
   console.log(data);
 </script>
