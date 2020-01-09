@@ -5,7 +5,8 @@ const { projectId, dataset } = api
 const client = sanityClient({
   projectId,
   dataset,
-  useCdn: true
+  token: process.env.FRONTEND_TOKEN,
+  useCdn: false
 })
 
 export default client

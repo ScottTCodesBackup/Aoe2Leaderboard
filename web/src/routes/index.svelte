@@ -25,6 +25,8 @@
 <script>
   export let seasons;
   export let players;
+
+  console.log(seasons)
 </script>
 
 <svelte:head>
