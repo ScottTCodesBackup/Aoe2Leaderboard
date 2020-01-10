@@ -9,4 +9,6 @@ const client = sanityClient({
   useCdn: false
 })
 
+console.log(process.env.FRONTEND_TOKEN);
+
 export default client

@@ -6,3 +6,6 @@
 
 # lerna files
 /lerna-debug.log
+
+# env files
+.env

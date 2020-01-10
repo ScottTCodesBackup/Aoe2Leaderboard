@@ -17,6 +17,7 @@
     "@sanity/client": "^0.142.6",
     "@sanity/image-url": "^0.140.15",
     "compression": "^1.7.4",
+    "dotenv": "^8.2.0",
     "groq": "^0.140.0",
     "polka": "^0.5.2",
     "sirv": "^0.4.2"
