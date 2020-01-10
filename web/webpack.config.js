@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const config = require('sapper/config/webpack.js');
 const pkg = require('./package.json');
+const sapperEnv = require('sapper-environment');
 
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
@@ -23,7 +24,7 @@ module.exports = {
 						options: {
 							dev,
 							hydratable: true,
-							hotReload: false // pending https://github.com/sveltejs/svelte/issues/2377
+							hotReload: false
 						}
 					}
 				}
@@ -31,17 +32,14 @@ module.exports = {
 		},
 		mode,
 		plugins: [
-			// pending https://github.com/sveltejs/svelte/issues/2377
-			// dev && new webpack.HotModuleReplacementPlugin(),
 			new webpack.DefinePlugin({
+				...sapperEnv(),
 				'process.browser': true,
 				'process.env.NODE_ENV': JSON.stringify(mode),
-				'process.env.FRONTEND_TOKEN': dev ? JSON.stringify(devEnv.FRONTEND_TOKEN) : JSON.stringify(process.env.FRONTEND_TOKEN),
 			}),
 		].filter(Boolean),
 		devtool: dev && 'inline-source-map'
 	},
-
 	server: {
 		entry: config.server.entry(),
 		output: config.server.output(),
@@ -65,7 +63,7 @@ module.exports = {
 		},
 		mode: process.env.NODE_ENV,
 		performance: {
-			hints: false // it doesn't matter if server.js is large
+			hints: false
 		}
 	},
 

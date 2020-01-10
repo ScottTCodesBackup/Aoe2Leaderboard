@@ -12,7 +12,8 @@
     if (active === true && matches === false) {
       const requestStr = `*[_type == "match" && season._ref == "${id}"] | order(_createdAt desc)`;
       client.fetch(requestStr).then(matchData => {
-        matches = matchData
+        matches = matchData;
+        console.log(matches);
       });
     }
   };

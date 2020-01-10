@@ -4,7 +4,7 @@
   "description": "Sapper frontend",
   "version": "0.0.1",
   "scripts": {
-    "dev": "sapper dev",
+    "dev": "netlify dev -c \"sapper dev\"",
     "build": "sapper export",
     "export": "sapper export",
     "start": "node __sapper__/build",
@@ -20,6 +20,7 @@
     "dotenv": "^8.2.0",
     "groq": "^0.140.0",
     "polka": "^0.5.2",
+    "sapper-environment": "^1.0.1",
     "sirv": "^0.4.2"
   },
   "devDependencies": {
